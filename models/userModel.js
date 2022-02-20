@@ -7,6 +7,18 @@ const userSchema = new mongoose.Schema({
     min: 3,
     max: 31,
   },
+  surname: {
+    type: String,
+    required: true,
+    min: 3,
+    max: 31,
+  },
+  username: {
+    type: String,
+    required: true,
+    min: 3,
+    max: 31,
+  },
   email: {
     type: String,
     required: true,
@@ -19,7 +31,7 @@ const userSchema = new mongoose.Schema({
     min: 8,
     max: 1024,
   },
-  created: {
+  createdOn: {
     type: Date,
     default: Date.now,
   },
