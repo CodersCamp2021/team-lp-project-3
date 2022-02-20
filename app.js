@@ -1,19 +1,23 @@
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+import exampleModule from './routes/example.js';
+
+const app = express();
 dotenv.config();
 
-// DB setup 
-mongoose.connect(process.env.DATABASE_PASSWORD, {useNewUrlParser:true})
-const db = mongoose.connection
-db.on('error', (error) => console.error(error))
-db.once('open', () => console.log("Connected to db"))
+// DB setup
+mongoose.connect(process.env.DATABASE_PASSWORD, { useNewUrlParser: true });
+const db = mongoose.connection;
+db.on('error', (error) => console.error(error));
+db.once('open', () => console.log('Connected to database.'));
 
 // allow express get json in request body
-app.use(express.json())
+app.use(express.json());
 
-const exampleModule = require('./urls/example')
-app.use('/example', exampleModule)
+app.use('/example', exampleModule);
 
-app.listen(3000, () => console.log('Server Started'))
+app.listen(3000, () =>
+  console.log('Server running on http://localhost:3000...'),
+);

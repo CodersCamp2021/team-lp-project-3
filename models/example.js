@@ -1,12 +1,12 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const exampleSchema = new mongoose.Schema({
-    name: {
-        type: String,
-    },
-    surname: {
-        type: String,
-    }
-})
+  name: {
+    type: String,
+  },
+  surname: {
+    type: String,
+  },
+});
 
-module.exports = mongoose.model('Example', exampleSchema)
+export const ExampleModel = mongoose.model('Example', exampleSchema);
