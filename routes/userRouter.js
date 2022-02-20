@@ -6,6 +6,7 @@ import {
   loginValidation,
   updateValidation,
   hashPassword,
+  emailExists,
 } from '../validation.js';
 
 const router = express.Router();
@@ -48,7 +49,16 @@ router.patch('/:userId', async (req, res) => {
     return res.status(400).json({ message: err.message });
   }
 
-  // check if user exists
+  // check if email exists
+  if (req.body.newEmail) {
+    try {
+      await emailExists(req.body.newEmail);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  // update user
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
@@ -70,14 +80,8 @@ router.post('/register', async (req, res) => {
     await registerValidation(req.body);
 
     // check if email or username does not exists
-    const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist) {
-      return res.status(400).json({ message: 'Email already exists' });
-    }
-    const usernameExist = await User.findOne({ username: req.body.username });
-    if (usernameExist) {
-      return res.status(400).json({ message: 'Username already exists' });
-    }
+    await emailExists(req.body.email);
+    await usernameExists(req.body.username);
 
     // hash password
     const salt = await bcrypt.genSalt();

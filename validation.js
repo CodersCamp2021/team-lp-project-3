@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import yup, { string } from 'yup';
+import { User } from './models/userModel.js';
 
 export const registerValidation = async (data) => {
   const schema = yup.object({
@@ -36,4 +37,18 @@ export const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
   return hashedPassword;
+};
+
+export const emailExists = async (email) => {
+  const emailExist = await User.findOne({ email: email });
+  if (emailExist) {
+    return res.status(400).json({ message: 'Email already exists' });
+  }
+};
+
+export const usernameExists = async (username) => {
+  const usernameExist = await User.findOne({ username: username });
+  if (usernameExist) {
+    return res.status(400).json({ message: 'Username already exists' });
+  }
 };
