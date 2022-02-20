@@ -1,7 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import { User } from '../models/userModel.js';
-import { registerValidation, loginValidation } from '../validation.js';
+import {
+  registerValidation,
+  loginValidation,
+  updateValidation,
+  hashPassword,
+} from '../validation.js';
 
 const router = express.Router();
 
@@ -9,6 +14,51 @@ router.get('/', async (req, res) => {
   try {
     const data = await User.find();
     res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/:userId', async (req, res) => {
+  if (req.params.userId.length !== 24) {
+    return res.status(400).json({ message: 'User not found' });
+  }
+
+  try {
+    const user = await User.findOne({ _id: req.params.userId });
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.patch('/:userId', async (req, res) => {
+  // if userId have not 24 signs
+  if (req.params.userId.length !== 24) {
+    return res.status(400).json({ message: 'User not found' });
+  }
+
+  // validate what user sent in request
+  try {
+    await updateValidation(req.body);
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
+
+  // check if user exists
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      req.body.newEmail
+        ? { email: req.body.newEmail }
+        : { password: await hashPassword(req.body.newPassword) },
+      { new: true },
+    );
+
+    res.json(updatedUser);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
