@@ -29,3 +29,5 @@ const gameSchema = new mongoose.Schema({
         required: true
     },
 })
+
+export const Game = mongoose.model('Game', gameSchema)
