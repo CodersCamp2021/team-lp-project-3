@@ -18,10 +18,8 @@
   },
   "homepage": "https://github.com/CodersCamp2021/team-lp-project-3#readme",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "express": "^4.17.3",
-    "mongoose": "^6.2.2",
-    "yup": "^0.32.11"
+    "mongoose": "^6.2.2"
   },
   "devDependencies": {
     "dotenv": "^16.0.0",

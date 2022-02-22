@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     required: true,
     min: 3,
     max: 31,
   },
-  surname: {
+  secondName: {
     type: String,
     required: true,
     min: 3,
@@ -16,24 +16,27 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
     min: 3,
     max: 31,
   },
   email: {
     type: String,
     required: true,
+    unique: true,
     min: 6,
     max: 255,
   },
   password: {
     type: String,
     required: true,
-    min: 8,
+    min: 6,
     max: 1024,
   },
+  ratings: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
   createdOn: {
     type: Date,
-    default: Date.now,
+    default: () => Date.now(),
   },
 });
 
