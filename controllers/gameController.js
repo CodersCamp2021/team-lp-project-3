@@ -6,7 +6,7 @@ class GameController {
       const game = await Game.findById(req.params.gameId);
       res.status(200).json(game);
     } catch (error) {
-      res.json({ message: error });
+      res.status(404).json({ message: error });
     }
   };
 }
