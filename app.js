@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import exampleRouter from './routes/example.js';
 import register from './routes/register.js';
 
 const app = express();
@@ -17,7 +16,6 @@ db.once('open', () => console.log('Connected to database.'));
 // allow express get json in request body
 app.use(express.json());
 
-app.use('/example', exampleRouter);
 app.use('/register', register);
 
 app.listen(3000, () =>

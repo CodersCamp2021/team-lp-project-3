@@ -1,6 +1,6 @@
 import pkg from 'express-validator';
 const { body, validationResult } = pkg;
-import { dummyUserModel } from '../models/dummyUserSchema.js';
+import { User } from '../models/userModel.js';
 
 export function validateRequest(req, res, next) {
   const errors = validationResult(req);
@@ -12,23 +12,25 @@ export function validateRequest(req, res, next) {
 }
 
 const registerValidator = [
-  body('username').isLength({ min: 4 }),
+  body('firstName').exists().isLength({ min: 3, max: 31 }),
+  body('secondName').exists().isLength({ min: 3, max: 31 }),
+  body('username').exists().isLength({ min: 3, max: 31 }),
   body('username').custom((value) => {
-    return dummyUserModel.findOne({ username: value }).then((user) => {
+    return User.findOne({ username: value }).then((user) => {
       if (user) {
         return Promise.reject('Username already in user');
       }
     });
   }),
-  body('password').isLength({ min: 8 }),
-  body('email').isEmail(),
+  body('email').isEmail().isLength({ min: 6, max: 255 }),
   body('email').custom((value) => {
-    return dummyUserModel.findOne({ email: value }).then((user) => {
+    return User.findOne({ email: value }).then((user) => {
       if (user) {
         return Promise.reject('E-mail already in user');
       }
     });
   }),
+  body('password').isLength({ min: 6, max: 1024 }),
 ];
 
 export { registerValidator };

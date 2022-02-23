@@ -1,7 +1,5 @@
 import express from 'express';
-import { dummyUserModel } from '../models/dummyUserSchema.js';
-import pkg from 'express-validator';
-const { body, validationResult } = pkg;
+import { User } from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import { validateRequest } from '../utils/validators.js';
 import { registerValidator } from '../utils/validators.js';
@@ -10,7 +8,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const exampleDataFromDB = await dummyUserModel.find();
+    const exampleDataFromDB = await User.find();
     res.status(200).json(exampleDataFromDB);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -19,15 +17,17 @@ router.get('/', async (req, res) => {
 
 router.post('/', registerValidator, validateRequest, async (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 11);
-  const newDummyUserSchema = new dummyUserModel({
+  const UserSchema = new User({
+    firstName: req.body.firstName,
+    secondName: req.body.secondName,
     username: req.body.username,
-    password: hashedPassword,
     email: req.body.email,
+    password: hashedPassword,
     type: 'user',
-    ref: [],
+    ratings: [],
   });
   try {
-    const savedInDBExample = await newDummyUserSchema.save();
+    const savedInDBExample = await UserSchema.save();
     res.status(201).json(savedInDBExample);
   } catch (err) {
     res.status(400).json({ message: err.message });
