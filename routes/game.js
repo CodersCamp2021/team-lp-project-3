@@ -1,15 +1,8 @@
 import express from 'express';
-import { Game } from '../models/gameModel.js';
+import GameController from '../controllers/gameController.js';
 
 const router = express.Router();
 
-router.get('/:gameId', async (req, res) => {
-  try {
-    const game = await Game.findById(req.params.gameId);
-    res.status(200).json(game);
-  } catch (error) {
-    res.json({ message: error });
-  }
-});
+router.get('/:gameId', GameController.game_details);
 
-export { router };
+export { router as gameRouter };

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import exampleRouter from './routes/example.js';
-import { router as gameRouter } from './routes/game.js';
+import { gameRouter } from './routes/game.js';
 
 const app = express();
 dotenv.config();
