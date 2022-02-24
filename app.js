@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 import register from './routes/register.js';
 
-const app = express();
+export const app = express();
 dotenv.config();
 
 // DB setup
