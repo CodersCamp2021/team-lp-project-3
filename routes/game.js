@@ -1,18 +1,47 @@
 import express from 'express';
-import { Game } from '../models/gameModel.js';
-
+import { GameModel } from '../models/gameModel.js';
 
 const router = express.Router();
 
-router
-    .route('/:gameId')
-    .put((req, res) => {
-        res.send(`Update Game with ID ${req.params.id}`)
-    }
+router.get('/', async (req, res) => {
+  try {
+    const games = await GameModel.find();
+    res.json(games);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-router.param('id', (req, res, next, id) => {
-    console.log(id)
-    next()
-})
+router.post('/', async (req, res) => {
+  const newGame = new GameModel({
+    title: req.body.title,
+    category: req.body.category,
+    description: req.body.description,
+    platform: req.body.platform,
+    developer: req.body.developer,
+    releaseDate: req.body.releaseDate,
+  });
 
-export { router };
+  try {
+    const savedGame = await newGame.save();
+    res.json(savedGame);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+router.put('/:gameId', (req, res) => {
+  try {
+    GameModel.findByIdAndUpdate(req.params.gameId, req.body, (err, result) => {
+      if (err) {
+        return res.json({ message: err.message });
+      } else {
+        return res.json(result);
+      }
+    });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+export default router;
