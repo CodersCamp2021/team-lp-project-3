@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,10 @@
     "mongoose": "^6.2.2"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^2.2.0",
     "dotenv": "^16.0.0",
     "jest": "^27.5.1",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
   }
 }
