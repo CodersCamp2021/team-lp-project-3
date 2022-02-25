@@ -2,6 +2,9 @@ import pkg from 'express-validator';
 const { body, validationResult } = pkg;
 import { User } from '../models/userModel.js';
 
+/**
+ * function throw error if validation failed
+ */
 export function validateRequest(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -11,6 +14,9 @@ export function validateRequest(req, res, next) {
   next();
 }
 
+/**
+ * middleware use to validate register request body
+ */
 const registerValidator = [
   body('firstName').exists().isLength({ min: 3, max: 31 }),
   body('secondName').exists().isLength({ min: 3, max: 31 }),
