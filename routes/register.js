@@ -6,15 +6,6 @@ import { registerValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  try {
-    const exampleDataFromDB = await User.find();
-    res.status(200).json(exampleDataFromDB);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
 router.post('/', registerValidator, validateRequest, async (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 11);
   const UserSchema = new User({
