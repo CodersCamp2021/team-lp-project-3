@@ -3,6 +3,9 @@ import { GameModel } from '../models/gameModel.js';
 
 const router = express.Router();
 
+/**
+ * DUMMY GET - NEEDS TO BE REPLACED
+ */
 router.get('/', async (req, res) => {
   try {
     const games = await GameModel.find();
@@ -12,6 +15,9 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * DUMMY POST - NEEDS TO BE REPLACED
+ */
 router.post('/', async (req, res) => {
   const newGame = new GameModel({
     title: req.body.title,
@@ -30,15 +36,24 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * Middleware that takes properties which needs to be updated,
+ * if success returns String "Updated", otherwise return error message
+ */
 router.put('/:gameId', (req, res) => {
   try {
-    GameModel.findByIdAndUpdate(req.params.gameId, req.body, (err, result) => {
-      if (err) {
-        return res.json({ message: err.message });
-      } else {
-        return res.json(result);
-      }
-    });
+    GameModel.findByIdAndUpdate(
+      req.params.gameId,
+      req.body,
+      { new: true },
+      (err) => {
+        if (err) {
+          return res.json({ message: err.message });
+        } else {
+          return res.json({ message: 'Updated' });
+        }
+      },
+    );
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
