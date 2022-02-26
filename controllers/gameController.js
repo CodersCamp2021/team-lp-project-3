@@ -9,6 +9,23 @@ class GameController {
       res.status(404).json({ message: error });
     }
   };
+
+  postGame = async (req, res) => {
+    const game = new Game({
+      title: req.body.title,
+      category: req.body.category,
+      description: req.body.description,
+      platform: req.body.platform,
+      developer: req.body.developer,
+      releaseDate: req.body.releaseDate,
+    });
+    try {
+      const savedGame = await game.save();
+      res.json(savedGame);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  };
 }
 
 export default new GameController();
