@@ -2,7 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import gameRouter from './routes/game.js';
+import exampleRouter from './routes/example.js';
+import { gameRouter } from './routes/game.js';
 
 const app = express();
 dotenv.config();
@@ -16,7 +17,8 @@ db.once('open', () => console.log('Connected to database.'));
 // allow express get json in request body
 app.use(express.json());
 
-app.use('/game', gameRouter);
+app.use('/example', exampleRouter);
+app.use('/games', gameRouter);
 
 app.listen(3000, () =>
   console.log('Server running on http://localhost:3000...'),
