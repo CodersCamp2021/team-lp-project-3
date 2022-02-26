@@ -5,7 +5,7 @@ import { validateRequest, gameValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
-router.get('/:gameId', GameController.game_details);
+router.get('/:gameId', GameController.getGameDetails);
 
 router.post('/', gameValidator, validateRequest, async (req, res) => {
   const game = new Game({
