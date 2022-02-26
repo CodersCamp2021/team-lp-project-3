@@ -12,7 +12,7 @@ class GameController {
 
   updateGameDetails = async (req, res) => {
     try {
-      GameModel.findByIdAndUpdate(
+      Game.findByIdAndUpdate(
         req.params.gameId,
         req.body,
         { new: true },
