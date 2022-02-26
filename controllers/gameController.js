@@ -9,6 +9,25 @@ class GameController {
       res.status(404).json({ message: error });
     }
   };
+
+  updateGameDetails = async (req, res) => {
+    try {
+      Game.findByIdAndUpdate(
+        req.params.gameId,
+        req.body,
+        { new: true },
+        (err) => {
+          if (err) {
+            return res.json({ message: err.message });
+          } else {
+            return res.json({ message: 'Updated' });
+          }
+        },
+      );
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  };
 }
 
 export default new GameController();
