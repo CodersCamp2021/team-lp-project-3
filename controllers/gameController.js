@@ -22,6 +22,21 @@ class GameController {
     try {
       const savedGame = await game.save();
       res.json(savedGame);
+
+  updateGameDetails = async (req, res) => {
+    try {
+      Game.findByIdAndUpdate(
+        req.params.gameId,
+        req.body,
+        { new: true },
+        (err) => {
+          if (err) {
+            return res.json({ message: err.message });
+          } else {
+            return res.json({ message: 'Updated' });
+          }
+        },
+      );
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
