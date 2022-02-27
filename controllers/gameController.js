@@ -1,6 +1,15 @@
 import { Game } from '../models/gameModel.js';
 
 class GameController {
+  getAllGames = async (req, res) => {
+    try {
+      const allGames = await Game.find();
+      res.status(200).json(allGames);
+    } catch (error) {
+      res.status(400).json({ message: error });
+    }
+  };
+
   getGameDetails = async (req, res) => {
     try {
       const game = await Game.findById(req.params.gameId);
