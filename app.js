@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import register from './routes/register.js';
+import { gameRouter } from './routes/game.js';
 
 export const app = express();
 dotenv.config();
@@ -17,7 +18,10 @@ db.once('open', () => console.log('Connected to database.'));
 app.use(express.json());
 
 app.use('/register', register);
+app.use('/games', gameRouter);
 
 app.listen(3000, () =>
   console.log('Server running on http://localhost:3000...'),
 );
+
+export default app;
