@@ -2,6 +2,7 @@ import pkg from 'express-validator';
 const { body, validationResult } = pkg;
 import { Game } from '../models/gameModel.js';
 import { User } from '../models/userModel.js';
+import { platforms } from '../models/gameModel.js';
 
 /**
  * function throw error if validation failed
@@ -25,14 +26,7 @@ const gameValidator = [
   }),
   body('category').exists().isString(),
   body('description').exists().isLength({ max: 1000 }),
-  body('platform').custom((value) => {
-    var platforms = ['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X'];
-    return Game.findOne({ platform: value }).then(() => {
-      if (!platforms.includes(value)) {
-        return Promise.reject('Platform not exist');
-      }
-    });
-  }),
+  body('platform').exists().isIn(platforms),
   body('developer').exists().isString(),
   body('releaseDate').exists().isDate(),
 ];
