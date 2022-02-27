@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.get('/:gameId', GameController.getGameDetails);
 router.delete('/:gameId', GameController.deleteGame);
+router.put('/:gameId', GameController.updateGameDetails);
 
 export { router as gameRouter };
