@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+export const platforms = ['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X'];
+
 const gameSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -18,7 +20,7 @@ const gameSchema = new mongoose.Schema({
   platform: {
     type: String,
     required: true,
-    enum: ['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X'],
+    enum: platforms,
   },
   developer: {
     type: String,
