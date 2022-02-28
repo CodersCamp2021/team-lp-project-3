@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
-import { app } from '../../app.js';
+import { app } from '../app.js';
 import dotenv from 'dotenv';
 
 dotenv.config();

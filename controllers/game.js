@@ -32,13 +32,16 @@ class GameController {
   };
 
   createGame = async (req, res) => {
+    const { title, category, description, platform, developer, releaseDate } =
+      req.body;
+
     const game = new Game({
-      title: req.body.title,
-      category: req.body.category,
-      description: req.body.description,
-      platform: req.body.platform,
-      developer: req.body.developer,
-      releaseDate: req.body.releaseDate,
+      title: title,
+      category: category,
+      description: description,
+      platform: platform,
+      developer: developer,
+      releaseDate: releaseDate,
     });
     try {
       const savedGame = await game.save();
