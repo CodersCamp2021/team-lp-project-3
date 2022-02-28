@@ -33,7 +33,11 @@ const userSchema = new mongoose.Schema({
     min: 6,
     max: 1024,
   },
-  ratings: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
+  type: {
+    type: String,
+    required: true,
+  },
+  ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
   createdOn: {
     type: Date,
     default: () => Date.now(),
