@@ -1,8 +1,7 @@
 import pkg from 'express-validator';
 const { body, validationResult } = pkg;
-import { Game } from '../models/gameModel.js';
-import { User } from '../models/userModel.js';
-import { platforms } from '../models/gameModel.js';
+import { Game, platforms } from '../models/game.js';
+import { User } from '../models/user.js';
 
 /**
  * function throw error if validation failed
