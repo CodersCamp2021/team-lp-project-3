@@ -20,7 +20,7 @@ const gameValidator = [
   body('title').custom((value) => {
     return Game.findOne({ title: value }).then((game) => {
       if (game) {
-        return Promise.reject('Game title already exist');
+        return Promise.reject('Game with this title already exists.');
       }
     });
   }),
@@ -36,12 +36,12 @@ const gameValidator = [
  */
 const registerValidator = [
   body('firstName').exists().isLength({ min: 3, max: 31 }),
-  body('secondName').exists().isLength({ min: 3, max: 31 }),
+  body('lastName').exists().isLength({ min: 3, max: 31 }),
   body('username').exists().isLength({ min: 3, max: 31 }),
   body('username').custom((value) => {
     return User.findOne({ username: value }).then((user) => {
       if (user) {
-        return Promise.reject('Username already in user');
+        return Promise.reject('Username already in use.');
       }
     });
   }),
