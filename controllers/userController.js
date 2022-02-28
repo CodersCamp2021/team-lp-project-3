@@ -1,7 +1,7 @@
 import { User } from '../models/userModel.js';
 
 class UserController {
-  updateUser = async () => {};
+  changeUserCredentials = async () => {};
 }
 
 export default UserController;
