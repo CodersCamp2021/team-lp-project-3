@@ -18,7 +18,7 @@ const gameValidator = [
  */
 const registerValidator = [
   body('firstName').exists().isLength({ min: 3, max: 31 }),
-  body('secondName').exists().isLength({ min: 3, max: 31 }),
+  body('lastName').exists().isLength({ min: 3, max: 31 }),
   body('username').exists().isLength({ min: 3, max: 31 }),
   body('email').isEmail().isLength({ min: 6, max: 255 }),
   body('password').isLength({ min: 6, max: 1024 }),
