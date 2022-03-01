@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import register from './routes/register.js';
+import login from './routes/login.js';
 import { gameRouter } from './routes/game.js';
 
 export const app = express();
@@ -18,6 +19,7 @@ db.once('open', () => console.log('Connected to database.'));
 app.use(express.json());
 
 app.use('/register', register);
+app.use('/login', login);
 app.use('/games', gameRouter);
 
 app.listen(3000, () =>
