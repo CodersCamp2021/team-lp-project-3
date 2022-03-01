@@ -24,7 +24,7 @@ export default class UserController {
     const hashedPassword = bcrypt.hashSync(req.body.password, 11);
     const UserSchema = new User({
       firstName: req.body.firstName,
-      secondName: req.body.secondName,
+      lastName: req.body.lastName,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
