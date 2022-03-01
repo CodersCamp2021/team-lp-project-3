@@ -24,7 +24,7 @@ export default class UserController {
     const hashedPassword = bcrypt.hashSync(req.body.password, 11);
     const UserSchema = new User({
       firstName: req.body.firstName,
-      secondName: req.body.secondName,
+      lastName: req.body.lastName,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
@@ -37,5 +37,40 @@ export default class UserController {
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
+  };
+  static login = async (req, res) => {
+    // check validation results
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // check if email is already in database
+    const email = await User.findOne({ email: req.body.email });
+    if (!email) {
+      return res
+        .status(400)
+        .json({ message: 'User with this email does not exist.' });
+    }
+
+    res.send(req.body);
+
+    // // hash password
+    // const hashedPassword = bcrypt.hashSync(req.body.password, 11);
+    // const UserSchema = new User({
+    //   firstName: req.body.firstName,
+    //   secondName: req.body.secondName,
+    //   username: req.body.username,
+    //   email: req.body.email,
+    //   password: hashedPassword,
+    //   type: 'user',
+    //   ratings: [],
+    // });
+    // try {
+    //   const savedInDBExample = await UserSchema.save();
+    //   res.status(201).json(savedInDBExample);
+    // } catch (err) {
+    //   res.status(400).json({ message: err.message });
+    // }
   };
 }
