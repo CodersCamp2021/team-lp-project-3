@@ -46,14 +46,24 @@ export default class UserController {
     }
 
     // check if email is already in database
-    const email = await User.findOne({ email: req.body.email });
-    if (!email) {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
       return res
         .status(400)
         .json({ message: 'User with this email does not exist.' });
     }
 
-    res.send(req.body);
+    //password is correct
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password,
+    );
+
+    if (!validPassword) {
+      return res.status(400).send('Invalid password');
+    }
+
+    res.send('Logged in');
 
     // // hash password
     // const hashedPassword = bcrypt.hashSync(req.body.password, 11);
