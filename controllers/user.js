@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { User } from '../models/user.js';
 
 export default class UserController {
@@ -63,7 +64,10 @@ export default class UserController {
       return res.status(400).send('Invalid password');
     }
 
-    res.send('Logged in');
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+    res.header('auth-token', token).send(token);
+
+    //res.send('Logged in');
 
     // // hash password
     // const hashedPassword = bcrypt.hashSync(req.body.password, 11);
