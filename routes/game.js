@@ -1,6 +1,6 @@
 import express from 'express';
 import GameController from '../controllers/game.js';
-import { validateRequest, gameValidator } from '../utils/validators.js';
+import { gameValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
@@ -9,6 +9,6 @@ router.get('/:gameId', GameController.getGameDetails);
 router.delete('/:gameId', GameController.deleteGame);
 router.put('/:gameId', GameController.updateGameDetails);
 
-router.post('/', gameValidator, validateRequest, GameController.createGame);
+router.post('/', gameValidator, GameController.createGame);
 
 export { router as gameRouter };

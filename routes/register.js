@@ -1,12 +1,13 @@
 import express from 'express';
-import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
-import { validateRequest } from '../utils/validators.js';
-import { registerValidator } from '../utils/validators.js';
+import { User } from '../models/user.js';
 
 const router = express.Router();
 
-router.post('/', registerValidator, validateRequest, async (req, res) => {
+router.post('/', async (req, res) => {
+  // validate data from request
+  // check if username/email is already in database
+
   const hashedPassword = bcrypt.hashSync(req.body.password, 11);
   const UserSchema = new User({
     firstName: req.body.firstName,

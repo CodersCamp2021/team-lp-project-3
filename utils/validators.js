@@ -1,28 +1,12 @@
-import pkg from 'express-validator';
-const { body, validationResult } = pkg;
-import { Game, platforms } from '../models/game.js';
+import { body } from 'express-validator';
+import { platforms } from '../models/game.js';
 import { User } from '../models/user.js';
 
 /**
- * function throw error if validation failed
+ * middleware use to validate game request body
  */
-export function validateRequest(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  next();
-}
-
 const gameValidator = [
-  body('title').custom((value) => {
-    return Game.findOne({ title: value }).then((game) => {
-      if (game) {
-        return Promise.reject('Game title already exist');
-      }
-    });
-  }),
+  body('title').exists().isString(),
   body('category').exists().isString(),
   body('description').exists().isLength({ max: 1000 }),
   body('platform').exists().isIn(platforms),

@@ -1,3 +1,4 @@
+import { validationResult } from 'express-validator';
 import { Game } from '../models/game.js';
 
 class GameController {
@@ -35,6 +36,18 @@ class GameController {
     const { title, category, description, platform, developer, releaseDate } =
       req.body;
 
+    // check validation results
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // check if game title is unique
+    const exisiting = await Game.findOne({ title: title });
+    if (exisiting) {
+      return res.status(400).json({ message: 'Game title already exist' });
+    }
+
     const game = new Game({
       title: title,
       category: category,
@@ -52,6 +65,14 @@ class GameController {
   };
 
   updateGameDetails = async (req, res) => {
+    // check if game with such id exists
+    const exisiting = await Game.findById(req.params.gameId);
+    if (!exisiting) {
+      return res
+        .status(400)
+        .json({ message: 'Game with this id does not exist' });
+    }
+
     try {
       Game.findByIdAndUpdate(
         req.params.gameId,
@@ -66,7 +87,7 @@ class GameController {
         },
       );
     } catch (err) {
-      res.status(400).json({ message: err.message });
+      res.status(500).json({ message: err.message });
     }
   };
 }
