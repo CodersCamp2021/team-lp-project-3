@@ -1,4 +1,5 @@
-import { Game } from '../models/gameModel.js';
+import { validationResult } from 'express-validator';
+import { Game } from '../models/game.js';
 
 class GameController {
   getAllGames = async (req, res) => {
@@ -32,13 +33,28 @@ class GameController {
   };
 
   createGame = async (req, res) => {
+    const { title, category, description, platform, developer, releaseDate } =
+      req.body;
+
+    // check validation results
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // check if game title is unique
+    const exisiting = await Game.findOne({ title: title });
+    if (exisiting) {
+      return res.status(400).json({ message: 'Game title already exist' });
+    }
+
     const game = new Game({
-      title: req.body.title,
-      category: req.body.category,
-      description: req.body.description,
-      platform: req.body.platform,
-      developer: req.body.developer,
-      releaseDate: req.body.releaseDate,
+      title: title,
+      category: category,
+      description: description,
+      platform: platform,
+      developer: developer,
+      releaseDate: releaseDate,
     });
     try {
       const savedGame = await game.save();
@@ -54,16 +70,19 @@ class GameController {
         req.params.gameId,
         req.body,
         { new: true },
-        (err) => {
+        (err, result) => {
           if (err) {
             return res.json({ message: err.message });
           } else {
-            return res.json({ message: 'Updated' });
+            res.json({
+              _id: result._id,
+              message: `${result.title} has been successfully updated.`,
+            });
           }
         },
       );
     } catch (err) {
-      res.status(400).json({ message: err.message });
+      res.status(404).json({ message: 'Game not found.' });
     }
   };
 }
