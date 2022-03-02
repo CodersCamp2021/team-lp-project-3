@@ -50,7 +50,7 @@ router.put('/:gameId', async (req, res) => {
       req.body,
     );
     return res.json({
-      message: `Successfully updated game with id ${game._id}`,
+      message: `Successfully updated game with id ${result._id}`,
     });
   } catch (err) {
     return res.status(500).json({

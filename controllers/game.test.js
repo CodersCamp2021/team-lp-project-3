@@ -108,6 +108,44 @@ describe('Updating game details', () => {
     // mock function that return data from db
     Game.findByIdAndUpdate = jest.fn().mockReturnValueOnce();
 
+    //mock body data
+    const mockBody = {
+      title: 'CS 1.6',
+    };
+
+    await expect(
+      GameController.updateGameDetails('621f5d05fd6dfee087a3c6a7', mockBody),
+    ).rejects.toThrowError();
+  });
+  it('should update game properly', async () => {
+    // mock function that return data from db
+    Game.findByIdAndUpdate = jest.fn().mockReturnValueOnce({
+      _id: '621f5d05fd6dfee087a3c6a7',
+      title: 'CS 3.3',
+      category: 'Shooter',
+      description: 'FPS game',
+      platform: 'PC',
+      developer: 'Valve',
+      releaseDate: '2015-12-12T00:00:00.000Z',
+      __v: 0,
+    });
+
+    //mock body data
+    const mockBody = {
+      title: 'CS 3.3',
+    };
+
+    await expect(
+      GameController.updateGameDetails('621f5d05fd6dfee087a3c6a7', mockBody),
+    ).resolves.toBeDefined();
+  });
+});
+
+describe('Deleting game', () => {
+  it('should throw error if there is no such gameId in db', async () => {
+    // mock function that return data from db
+    Game.findByIdAndDelete = jest.fn().mockReturnValueOnce();
+
     await expect(
       GameController.updateGameDetails('621f5d05fd6dfee087a3c6a7'),
     ).rejects.toThrowError();

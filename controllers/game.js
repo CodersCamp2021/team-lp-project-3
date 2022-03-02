@@ -48,16 +48,13 @@ class GameController {
     return game;
   };
 
-  deleteGame = async (req, res) => {
-    try {
-      const game = await Game.findByIdAndDelete(req.params.gameId);
-      res.status(200).json({
-        _id: game._id,
-        message: `${game.title} has been successfully deleted from the DB.`,
-      });
-    } catch (error) {
-      res.status(404).json({ message: 'Game not found.' });
+  deleteGame = async (gameId) => {
+    const game = await Game.findByIdAndDelete(gameId);
+
+    if (!game) {
+      throw new Error(`Game with id: ${gameId} does not exists`);
     }
+    return game;
   };
 }
 
