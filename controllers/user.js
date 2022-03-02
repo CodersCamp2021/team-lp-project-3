@@ -62,6 +62,7 @@ export default class UserController {
       }
       user.email = req.body.email;
 
+      // update email
       await user.save();
       return res.status(200).json({
         message: 'E-mail successfully updated.',
@@ -91,6 +92,7 @@ export default class UserController {
       const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
       user.password = hashedPassword;
 
+      // update password
       await user.save();
       return res.status(200).json({
         message: 'Password successfully updated.',
