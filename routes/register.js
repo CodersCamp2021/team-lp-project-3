@@ -7,10 +7,11 @@ import { registerValidator } from '../utils/validators.js';
 const router = express.Router();
 
 router.post('/', registerValidator, validateRequest, async (req, res) => {
-  const hashedPassword = bcrypt.hashSync(req.body.password, 11);
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
   const UserSchema = new User({
     firstName: req.body.firstName,
-    secondName: req.body.secondName,
+    lastName: req.body.lastName,
     username: req.body.username,
     email: req.body.email,
     password: hashedPassword,
