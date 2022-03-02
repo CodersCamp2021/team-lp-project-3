@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
-import { app } from '../../app.js';
+import { app } from '../app.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,7 +20,7 @@ describe('register feature tests', () => {
   it('should register new user with correct data', async () => {
     const response = await request(app).post('/register/').send({
       firstName: 'firstname',
-      secondName: 'secondname',
+      lastName: 'lastname',
       username: 'username',
       email: 'randomemail@test.com',
       password: 'password1234',
@@ -28,7 +28,7 @@ describe('register feature tests', () => {
 
     expect(response.statusCode).toBe(201);
     expect(response.body.firstName).toBe('firstname');
-    expect(response.body.secondName).toBe('secondname');
+    expect(response.body.lastName).toBe('lastName');
     expect(response.body.username).toBe('username');
     expect(response.body.email).toBe('randomemail@test.com');
     expect(response.body.type).toBe('user');
@@ -38,7 +38,7 @@ describe('register feature tests', () => {
   it('should NOT register new user with the same data as existing', async () => {
     const response = await request(app).post('/register/').send({
       firstName: 'firstname',
-      secondName: 'secondname',
+      lastName: 'lastname',
       username: 'username',
       email: 'randomemail@test.com',
       password: 'password1234',
@@ -66,7 +66,7 @@ describe('register feature tests', () => {
   it('should NOT register new user without firstname', async () => {
     const response = await request(app).post('/register/').send({
       // no first name
-      secondName: 'secondname',
+      lastName: 'lastname',
       username: 'username',
       email: 'randomemail@test.com',
       password: 'password1234',
@@ -75,7 +75,7 @@ describe('register feature tests', () => {
     expect(response.statusCode).toBe(400);
   });
 
-  it('should NOT register new user without secondName', async () => {
+  it('should NOT register new user without lastName', async () => {
     const response = await request(app).post('/register/').send({
       firstName: 'firstname',
       // no second name
@@ -90,7 +90,7 @@ describe('register feature tests', () => {
   it('should NOT register new user without username', async () => {
     const response = await request(app).post('/register/').send({
       firstName: 'firstname',
-      secondName: 'secondname',
+      lastName: 'lastname',
       // no username
       email: 'randomemail@test.com',
       password: 'password1234',
@@ -102,7 +102,7 @@ describe('register feature tests', () => {
   it('should NOT register new user without email', async () => {
     const response = await request(app).post('/register/').send({
       firstName: 'firstname',
-      secondName: 'secondname',
+      lastName: 'lastname',
       username: 'username',
       // no email
       password: 'password1234',
@@ -114,7 +114,7 @@ describe('register feature tests', () => {
   it('should NOT register new user without password', async () => {
     const response = await request(app).post('/register/').send({
       firstName: 'firstname',
-      secondName: 'secondname',
+      lastName: 'lastname',
       username: 'username',
       email: 'randomemail@test.com',
       // no password
