@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
   games: {
     gameId: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Game",
       },
     ],

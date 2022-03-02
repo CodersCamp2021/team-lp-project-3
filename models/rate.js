@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const rateSchema = new mongoose.Schema({
   rating: {
     type: Number,
-    min: 0,
+    min: -1,
     max: 1,
     default: 0,
   },
