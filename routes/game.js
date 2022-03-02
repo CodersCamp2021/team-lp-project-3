@@ -17,9 +17,9 @@ router.post('/', gameValidator, async (req, res) => {
     return res.json({
       message: `Successfully created game with id ${game._id}`,
     });
-  } catch (error) {
+  } catch (err) {
     return res.status(500).json({
-      message: error.message,
+      message: err.message,
     });
   }
 });
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     return res.json(result);
   } catch (err) {
     return res.status(500).json({
-      message: error.message,
+      message: err.message,
     });
   }
 });
@@ -39,11 +39,25 @@ router.get('/:gameId', async (req, res) => {
     return res.json(result);
   } catch (err) {
     return res.status(500).json({
-      message: error.message,
+      message: err.message,
+    });
+  }
+});
+router.put('/:gameId', async (req, res) => {
+  try {
+    const result = await GameController.updateGameDetails(
+      req.params.gameId,
+      req.body,
+    );
+    return res.json({
+      message: `Successfully updated game with id ${game._id}`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
     });
   }
 });
 router.delete('/:gameId', GameController.deleteGame);
-router.put('/:gameId', GameController.updateGameDetails);
 
 export { router as gameRouter };

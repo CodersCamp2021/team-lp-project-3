@@ -38,26 +38,14 @@ class GameController {
     return game;
   };
 
-  updateGameDetails = async (req, res) => {
-    try {
-      Game.findByIdAndUpdate(
-        req.params.gameId,
-        req.body,
-        { new: true },
-        (err, result) => {
-          if (err) {
-            return res.json({ message: err.message });
-          } else {
-            res.json({
-              _id: result._id,
-              message: `${result.title} has been successfully updated.`,
-            });
-          }
-        },
-      );
-    } catch (err) {
-      res.status(404).json({ message: 'Game not found.' });
+  updateGameDetails = async (gameId, body) => {
+    const game = await Game.findByIdAndUpdate(gameId, body, { new: true });
+
+    if (!game) {
+      throw new Error(`Game with id: ${gameId} does not exists`);
     }
+
+    return game;
   };
 
   deleteGame = async (req, res) => {

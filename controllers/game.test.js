@@ -103,6 +103,13 @@ describe('Getting one game', () => {
   });
 });
 
-// describe('Updating game details', () => {
-//   it('should ')
-//  })
+describe('Updating game details', () => {
+  it('should throw error if there is no such gameId in db', async () => {
+    // mock function that return data from db
+    Game.findByIdAndUpdate = jest.fn().mockReturnValueOnce();
+
+    await expect(
+      GameController.updateGameDetails('621f5d05fd6dfee087a3c6a7'),
+    ).rejects.toThrowError();
+  });
+});
