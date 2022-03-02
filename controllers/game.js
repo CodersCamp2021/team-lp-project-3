@@ -25,6 +25,19 @@ class GameController {
     return savedGame;
   };
 
+  getAllGames = async () => {
+    const allGames = await Game.find();
+    return allGames;
+  };
+
+  getGameDetails = async (gameId) => {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      throw new Error(`Game with id: ${gameId} does not exists`);
+    }
+    return game;
+  };
+
   updateGameDetails = async (req, res) => {
     try {
       Game.findByIdAndUpdate(
@@ -44,23 +57,6 @@ class GameController {
       );
     } catch (err) {
       res.status(404).json({ message: 'Game not found.' });
-    }
-  };
-  getAllGames = async (req, res) => {
-    try {
-      const allGames = await Game.find();
-      res.status(200).json(allGames);
-    } catch (error) {
-      res.status(400).json({ message: error });
-    }
-  };
-
-  getGameDetails = async (req, res) => {
-    try {
-      const game = await Game.findById(req.params.gameId);
-      res.status(200).json(game);
-    } catch (error) {
-      res.status(404).json({ message: error });
     }
   };
 

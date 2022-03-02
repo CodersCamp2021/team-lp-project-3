@@ -23,8 +23,26 @@ router.post('/', gameValidator, async (req, res) => {
     });
   }
 });
-router.get('/', GameController.getAllGames);
-router.get('/:gameId', GameController.getGameDetails);
+router.get('/', async (req, res) => {
+  try {
+    const result = await GameController.getAllGames();
+    return res.json(result);
+  } catch (err) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+router.get('/:gameId', async (req, res) => {
+  try {
+    const result = await GameController.getGameDetails(req.params.gameId);
+    return res.json(result);
+  } catch (err) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 router.delete('/:gameId', GameController.deleteGame);
 router.put('/:gameId', GameController.updateGameDetails);
 

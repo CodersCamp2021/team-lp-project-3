@@ -4,7 +4,7 @@ import { Game } from '../models/game.js';
 
 describe('Creating game', () => {
   it('should create game when title is unique', async () => {
-    // mock findOne to be a functions that returns another game
+    // mock findOne to be a functions that return nothing
     Game.findOne = jest.fn().mockReturnValueOnce();
     // mock saving objects
     Game.prototype.save = jest.fn().mockImplementation(() => {
@@ -44,3 +44,65 @@ describe('Creating game', () => {
     await expect(GameController.createGame(mockBody)).rejects.toThrowError();
   });
 });
+
+describe('Getting all games', () => {
+  it('should return all games in db', async () => {
+    // mock function that return data from db
+    Game.find = jest.fn().mockReturnValueOnce([
+      {
+        _id: '621f5d05fd6dfee087a3c6a7',
+        title: 'CS:GO',
+        category: 'Shooter',
+        description: 'FPS game',
+        platform: 'PC',
+        developer: 'Valve',
+        releaseDate: '2015-12-12T00:00:00.000Z',
+        __v: 0,
+      },
+      {
+        _id: '621f5dd418dfee102b372991',
+        title: 'Minecraft',
+        category: 'Sandbox',
+        description: 'Creative game',
+        platform: 'PC',
+        developer: 'Mojang',
+        releaseDate: '2010-12-12T00:00:00.000Z',
+        __v: 0,
+      },
+    ]);
+
+    await expect(GameController.getAllGames()).resolves.toBeDefined();
+  });
+});
+
+describe('Getting one game', () => {
+  it('should return info about game that matches gameId from url', async () => {
+    // mock function that return data from db
+    Game.findById = jest.fn().mockReturnValueOnce({
+      _id: '621f5d05fd6dfee087a3c6a7',
+      title: 'CS:GO',
+      category: 'Shooter',
+      description: 'FPS game',
+      platform: 'PC',
+      developer: 'Valve',
+      releaseDate: '2015-12-12T00:00:00.000Z',
+      __v: 0,
+    });
+
+    await expect(
+      GameController.getGameDetails('621f5d05fd6dfee087a3c6a7'),
+    ).resolves.toBeDefined();
+  });
+  it('should throw error if there is no such gameId in db', async () => {
+    // mock function that return data from db
+    Game.findById = jest.fn().mockReturnValueOnce();
+
+    await expect(
+      GameController.getGameDetails('621f5d05fd6dfee087a3c6a7'),
+    ).rejects.toThrowError();
+  });
+});
+
+// describe('Updating game details', () => {
+//   it('should ')
+//  })
