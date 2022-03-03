@@ -6,9 +6,8 @@ const router = express.Router();
 
 router.get('/', GameController.getAllGames);
 router.get('/:gameId', GameController.getGameDetails);
-router.delete('/:gameId', GameController.deleteGame);
-router.put('/:gameId', GameController.updateGameDetails);
-
 router.post('/', gameValidator, GameController.createGame);
+router.put('/:gameId', GameController.updateGameDetails);
+router.delete('/:gameId', GameController.deleteGame);
 
 export { router as gameRouter };

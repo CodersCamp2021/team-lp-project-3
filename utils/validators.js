@@ -24,4 +24,31 @@ const registerValidator = [
   body('password').isLength({ min: 6, max: 1024 }),
 ];
 
-export { registerValidator, gameValidator };
+/**
+ * Middleware - email validation
+ */
+const changeEmailValidator = [
+  body('email').exists().isEmail().isLength({ min: 6, max: 255 }),
+  body('password').exists().isLength({ min: 6, max: 1024 }),
+];
+
+/**
+ * Middleware - password validation
+ */
+const changePassValidator = [
+  body('password').exists().isLength({ min: 6, max: 1024 }),
+  body('newPassword').exists().isLength({ min: 6, max: 1024 }),
+  body('passwordConfirmation').custom((value, { req }) => {
+    if (value !== req.body.newPassword) {
+      throw new Error('Password confirmation does not match password.');
+    }
+    return true;
+  }),
+];
+
+export {
+  registerValidator,
+  gameValidator,
+  changeEmailValidator,
+  changePassValidator,
+};
