@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
+import { Blacklist } from '../models/blacklist.js';
 
 export default class UserController {
   static register = async (req, res) => {
@@ -38,4 +39,14 @@ export default class UserController {
       res.status(400).json({ message: err.message });
     }
   };
+
+  static logout = async (req, res) => {
+    const BlacklistSchema = new Blacklist({
+      token = "aaa", // take from Authorization: Bearer <token>
+      // take expire from jwt token 
+      createdAt: { type: Date, expires: '2m', default: Date.now }
+    });
+  }
 }
+
+// createdAt: { type: Date, expires: '2m', default: Date.now }
