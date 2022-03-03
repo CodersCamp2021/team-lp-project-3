@@ -131,7 +131,7 @@ Authenticates user and assigns a JWT Token.
 }
 ```
 
-> ## **POST** `/user/changeEmail/:userId`
+> ## **PUT** `/user/changeEmail/:userId`
 
 Allows user to change email.
 
@@ -169,7 +169,7 @@ Allows user to change email.
 }
 ```
 
-> ## **POST** `/user/changePassword/:userId`
+> ## **PUT** `/user/changePassword/:userId`
 
 Allows user to change password.
 
