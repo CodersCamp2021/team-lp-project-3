@@ -1,1 +1,96 @@
-# team-lp-project-3
+# CodersCamp 2021 - Team: Łukasz Powązka
+
+## Project 3: Node.js
+
+**Mentor**: [Łukasz Powązka](https://github.com/lukiq)
+
+**Team members**:
+
+- [Patryk Brodziak](https://github.com/patrykbrodziak1)
+- [Jakub Czerwiński](https://github.com/kubaczerwinski77)
+- [Huber Grobelny](https://github.com/Burbinox)
+- [Maciej Jankowski](https://github.com/macjank)
+- [Krzysztof Prońko](https://github.com/Ruud1990)
+- [Paweł Stępień](https://github.com/pastepi)
+
+# API usage
+
+## Introduction
+
+Welcome to our API documentation. Here you can find all endpoints we provide, described in detail so that you can quickly and easily find what you need.
+
+## HTTP status codes summary
+
+- `400` - your request is incorrect, probably you have passed inproper argument. Check them out and try again.
+- `404` - not found, you are trying to reach resource that does not exist.
+- `500` - internal server error, let us know, we are probably already working on it.
+
+# User controller
+
+> ## **POST** `/register`
+
+Registers a user in the DB.
+
+### **Request parameters**
+
+| Parameter |  Type  |
+| --------- | :----: |
+| firstName | string |
+| lastName  | string |
+| username  | string |
+| email     | string |
+| password  | string |
+
+### Example request:
+
+```
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "username": "JohnUndefined",
+    "email": "john.doe@gmail.com",
+    "password": "password"
+}
+```
+
+### Example Response:
+
+- Success - `Code: 200`
+
+```
+{
+    {
+    "firstName": "John",
+    "lastName": "Doe",
+    "username": "JohnUndefined",
+    "email": "john.doe@gmail.com",
+    "password": "[HashedPassword]",
+    "type": "user",
+    "ratings": [],
+    "_id": "[MongooseId]",
+    "createdOn": "2022-03-03T21:01:37.531Z",
+    "__v": 0
+   }
+}
+```
+
+- Failure - `Code: 400`
+
+```
+{
+    "errors": [
+        {
+            "value": "test132",
+            "msg": "Username already in use.",
+            "param": "username",
+            "location": "body"
+        },
+        {
+            "value": "k.testetestse@gmail.com",
+            "msg": "E-mail already in use.",
+            "param": "email",
+            "location": "body"
+        }
+    ]
+}
+```
