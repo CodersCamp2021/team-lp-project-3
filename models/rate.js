@@ -1,21 +1,19 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const rateSchema = new mongoose.Schema({
   rating: {
     type: Number,
-    min: -1,
-    max: 1,
+    enum: [-1, 0, 1],
     default: 0,
   },
-  rater: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
   },
-  ratedBook: {
+  gameId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Game",
+    ref: 'Game',
   },
 });
-
 
 export const Rate = mongoose.model('Rate', rateSchema);
