@@ -67,6 +67,6 @@ export default class UserController {
     const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
       expiresIn: '30m',
     });
-    res.header('auth-token', token).send(token);
+    res.header('auth-token', token).json({message: "Logged in successfully"});
   };
 }
