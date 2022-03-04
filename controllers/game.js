@@ -42,7 +42,7 @@ class GameController {
     const game = await Game.findByIdAndUpdate(gameId, body, { new: true });
 
     if (!game) {
-      throw new Error(`Game with id: ${gameId} does not exists`);
+      throw new Error(`Game with id: ${gameId} does not exist`);
     }
 
     return game;
@@ -52,7 +52,7 @@ class GameController {
     const game = await Game.findByIdAndDelete(gameId);
 
     if (!game) {
-      throw new Error(`Game with id: ${gameId} does not exists`);
+      throw new Error(`Game with id: ${gameId} does not exist`);
     }
     return game;
   };

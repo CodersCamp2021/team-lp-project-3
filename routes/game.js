@@ -1,7 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import GameController from '../controllers/game.js';
-import { gameValidator } from '../utils/validators.js';
+import { gameIdValdiator, gameValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
@@ -33,7 +33,12 @@ router.get('/', async (req, res) => {
     });
   }
 });
-router.get('/:gameId', async (req, res) => {
+router.get('/:gameId', gameIdValdiator, async (req, res) => {
+  // check validation results
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const result = await GameController.getGameDetails(req.params.gameId);
     return res.json(result);
@@ -43,7 +48,12 @@ router.get('/:gameId', async (req, res) => {
     });
   }
 });
-router.put('/:gameId', async (req, res) => {
+router.put('/:gameId', gameIdValdiator, async (req, res) => {
+  // check validation results
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const result = await GameController.updateGameDetails(
       req.params.gameId,
@@ -58,6 +68,23 @@ router.put('/:gameId', async (req, res) => {
     });
   }
 });
-router.delete('/:gameId', GameController.deleteGame);
+router.delete('/:gameId', gameIdValdiator, async (req, res) => {
+  // check validation results
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const result = await GameController.deleteGame(req.params.gameId);
+    return res.json({
+      message: `Successfully deleted game with id ${result._id}`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+});
 
 export { router as gameRouter };

@@ -1,4 +1,5 @@
-import { body } from 'express-validator';
+import mongoose from 'mongoose';
+import { body, param } from 'express-validator';
 import { platforms } from '../models/game.js';
 
 /**
@@ -46,9 +47,22 @@ const changePassValidator = [
   }),
 ];
 
+/**
+ * Middleware - gameId from URL validation
+ */
+const gameIdValdiator = [
+  param('gameId').custom((value) => {
+    if (!mongoose.isValidObjectId(value)) {
+      throw new Error(`Game with id: ${value} does not exist`);
+    }
+    return true;
+  }),
+];
+
 export {
   registerValidator,
   gameValidator,
   changeEmailValidator,
   changePassValidator,
+  gameIdValdiator,
 };
