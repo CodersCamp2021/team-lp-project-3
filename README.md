@@ -254,15 +254,15 @@ Creates new game.
 
 ```
 {
-      message: `Successfully created game with id 62212e715a4dc7551a3ebe94`,
-    }
+	"message": "Successfully created game with id 6221ed4c0937d3359e1f53aa"
+}
 ```
 
 - Failure - `Code: 400`
 
 ```
 {
-	"message": "Game title already exist"
+	"message": "Game called CS:GO already exists"
 }
 ```
 
@@ -382,8 +382,8 @@ Updates information about game that matches `gameId` from URL params with data p
 	"title": "CS:Global Offensive",
 	"category": "Shooter",
 	"description": "FPS game",
-	"platform": "PC",
-	"developer": "PS5",
+	"platform": "PS5",
+	"developer": "Valve",
 	"releaseDate": "2015-12-12T00:00:00.000Z",
 	"__v": 0
 }
@@ -417,8 +417,8 @@ Deletes game that matches `gameId` from URL params.
 
 ```
 {
-      message: `Successfully deleted game with id 62212e715a4dc7551a3ebe94`,
-    }
+	"message": "Successfully deleted game with id 62212e715a4dc7551a3ebe94"
+}
 ```
 
 - Failure - `Code: 400`
