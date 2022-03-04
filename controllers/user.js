@@ -61,7 +61,7 @@ export default class UserController {
     );
 
     if (!validPassword) {
-      return res.status(400).send('Invalid password');
+      return res.status(400).json({ message: 'Invalid password' });
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
