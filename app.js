@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import register from './routes/register.js';
 import login from './routes/login.js';
 import { gameRouter } from './routes/game.js';
+import { userRouter } from './routes/user.js';
 
 export const app = express();
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/register', register);
 app.use('/login', login);
 app.use('/games', gameRouter);
+app.use('/user', userRouter);
 
 app.listen(3000, () =>
   console.log('Server running on http://localhost:3000...'),
