@@ -48,15 +48,25 @@ class RateController {
           new: true,
         },
       );
+
+      // push userId to game.ratedBy array or remove it if rating === 0
+      if (!game.ratedBy.includes(rate.userId)) {
+        game.ratedBy.push(rate.userId);
+      } else if (game.ratedBy.includes(rate.userId) && !rate.rating) {
+        game.ratedBy.splice(game.ratedBy.indexOf(rate.userId), 1);
+      }
+
+      // push gameId to user.ratedGames array or remove it if rating === 0
+      if (!user.ratedGames.includes(rate.gameId)) {
+        user.ratedGames.push(rate.gameId);
+      } else if (user.ratedGames.includes(rate.gameId) && !rate.rating) {
+        user.ratedGames.splice(user.ratedGames.indexOf(rate.gameId), 1);
+      }
+
+      await game.save();
+      await user.save();
+
       return res.status(200).json({ message: 'Rating updated.' });
-
-      // // check if game was rated before
-      // const rateExists = await User.findOne({ rating: req.body.rating });
-      // if (rating !== 0) {
-      //   return res.status(400).json({ message: 'Rate has been given.' });
-      // }
-
-      // user.rateExist = req.body.rating;
     } catch (error) {
       res.status(500).json({ message: error });
     }
