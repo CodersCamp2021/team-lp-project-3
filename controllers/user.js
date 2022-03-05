@@ -29,7 +29,7 @@ export default class UserController {
       email: req.body.email,
       password: hashedPassword,
       type: 'user',
-      ratings: [],
+      ratedGames: [],
     });
     try {
       const savedInDBExample = await UserSchema.save();

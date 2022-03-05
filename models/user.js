@@ -37,14 +37,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  games: {
-    gameId: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Game',
-      },
-    ],
-  },
+  ratedGames: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Game',
+    },
+  ],
   createdOn: {
     type: Date,
     default: () => Date.now(),

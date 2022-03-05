@@ -55,6 +55,7 @@ class GameController {
       platform: platform,
       developer: developer,
       releaseDate: releaseDate,
+      ratedBy: [],
     });
     try {
       const savedGame = await game.save();
