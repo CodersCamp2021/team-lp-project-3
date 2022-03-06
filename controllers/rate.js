@@ -27,19 +27,30 @@ class RateController {
       const user = await User.findById(req.body.userId);
       if (!user) return res.status(404).json({ error: 'No user found.' });
 
-      const rate = await Rate.findOneAndUpdate(
-        {
+      let rate;
+
+      // if rating === 0, remove it from the collection
+      if (!req.body.rating) {
+        rate = await Rate.findOneAndRemove({
           gameId: req.body.gameId,
           userId: req.body.userId,
-        },
-        {
-          rating: req.body.rating,
-        },
-        {
-          upsert: true,
-          new: true,
-        },
-      );
+        });
+      } else {
+        // if rating !== 0, add/update it
+        rate = await Rate.findOneAndUpdate(
+          {
+            gameId: req.body.gameId,
+            userId: req.body.userId,
+          },
+          {
+            rating: req.body.rating,
+          },
+          {
+            upsert: true,
+            new: true,
+          },
+        );
+      }
 
       // push userId to game.ratedBy array or remove it if rating === 0
       if (!game.ratedBy.includes(rate.userId)) {
