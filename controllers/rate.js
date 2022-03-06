@@ -53,17 +53,20 @@ class RateController {
       }
 
       // push userId to game.ratedBy array or remove it if rating === 0
-      if (!game.ratedBy.includes(rate.userId)) {
-        game.ratedBy.push(rate.userId);
-      } else if (game.ratedBy.includes(rate.userId) && !rate.rating) {
-        game.ratedBy.splice(game.ratedBy.indexOf(rate.userId), 1);
+      if (!game.ratedBy.includes(req.body.userId) && req.body.rating) {
+        game.ratedBy.push(req.body.userId);
+      } else if (game.ratedBy.includes(req.body.userId) && !req.body.rating) {
+        game.ratedBy.splice(game.ratedBy.indexOf(req.body.userId), 1);
       }
 
       // push gameId to user.ratedGames array or remove it if rating === 0
-      if (!user.ratedGames.includes(rate.gameId)) {
-        user.ratedGames.push(rate.gameId);
-      } else if (user.ratedGames.includes(rate.gameId) && !rate.rating) {
-        user.ratedGames.splice(user.ratedGames.indexOf(rate.gameId), 1);
+      if (!user.ratedGames.includes(req.body.gameId) && req.body.rating) {
+        user.ratedGames.push(req.body.gameId);
+      } else if (
+        user.ratedGames.includes(req.body.gameId) &&
+        !req.body.rating
+      ) {
+        user.ratedGames.splice(user.ratedGames.indexOf(req.body.gameId), 1);
       }
 
       await game.save();
@@ -71,7 +74,8 @@ class RateController {
 
       return res.status(200).json({ message: 'Rating updated.' });
     } catch (error) {
-      res.status(500).json({ message: error });
+      console.log(error);
+      res.status(500).json({ error });
     }
   };
 }
