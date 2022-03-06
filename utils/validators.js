@@ -56,7 +56,7 @@ const gameIdValdiator = [
       throw new Error(`Game with id: ${value} does not exist`);
     }
     return true;
-  })
+  }),
 ];
 /**
  * Middleware use to validate login request body
@@ -71,10 +71,6 @@ export {
   gameValidator,
   changeEmailValidator,
   changePassValidator,
-<<<<<<< HEAD
   gameIdValdiator,
-=======
   loginValidator,
->>>>>>> main
 };
-
