@@ -27,17 +27,25 @@ class RateController {
       const user = await User.findById(req.body.userId);
       if (!user) return res.status(404).json({ error: 'User not found.' });
 
-      let rate;
-
-      // if rating === 0, remove it from the collection
+      // if rating === 0
       if (!req.body.rating) {
-        rate = await Rate.findOneAndDelete({
+        // remove it from the collection
+        await Rate.findOneAndDelete({
           gameId: req.body.gameId,
           userId: req.body.userId,
         });
+        // remove 'userId' from 'ratedBy'
+        if (game.ratedBy.includes(req.body.userId)) {
+          game.ratedBy.splice(game.ratedBy.indexOf(req.body.userId), 1);
+        }
+        // remove 'gameId' from 'ratedGames'
+        if (user.ratedGames.includes(req.body.gameId)) {
+          user.ratedGames.splice(user.ratedGames.indexOf(req.body.gameId), 1);
+        }
       } else {
-        // if rating !== 0, add/update it
-        rate = await Rate.findOneAndUpdate(
+        // if rating !== 0
+        // add/update it in the collection
+        await Rate.findOneAndUpdate(
           {
             gameId: req.body.gameId,
             userId: req.body.userId,
@@ -50,23 +58,14 @@ class RateController {
             new: true,
           },
         );
-      }
-
-      // push userId to game.ratedBy array or remove it if rating === 0
-      if (!game.ratedBy.includes(req.body.userId) && req.body.rating) {
-        game.ratedBy.push(req.body.userId);
-      } else if (game.ratedBy.includes(req.body.userId) && !req.body.rating) {
-        game.ratedBy.splice(game.ratedBy.indexOf(req.body.userId), 1);
-      }
-
-      // push gameId to user.ratedGames array or remove it if rating === 0
-      if (!user.ratedGames.includes(req.body.gameId) && req.body.rating) {
-        user.ratedGames.push(req.body.gameId);
-      } else if (
-        user.ratedGames.includes(req.body.gameId) &&
-        !req.body.rating
-      ) {
-        user.ratedGames.splice(user.ratedGames.indexOf(req.body.gameId), 1);
+        // push 'userId' to 'ratedBy'
+        if (!game.ratedBy.includes(req.body.userId)) {
+          game.ratedBy.push(req.body.userId);
+        }
+        // push 'gameId' to 'ratedGames'
+        if (!user.ratedGames.includes(req.body.gameId)) {
+          user.ratedGames.push(req.body.gameId);
+        }
       }
 
       await game.save();
