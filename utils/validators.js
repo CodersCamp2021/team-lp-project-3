@@ -50,7 +50,7 @@ const changePassValidator = [
 /**
  * Middleware - gameId from URL validation
  */
-const gameIdValdiator = [
+const gameIdValidator = [
   param('gameId').custom((value) => {
     if (!mongoose.isValidObjectId(value)) {
       throw new Error(`Game with id: ${value} does not exist`);
@@ -71,6 +71,6 @@ export {
   gameValidator,
   changeEmailValidator,
   changePassValidator,
-  gameIdValdiator,
+  gameIdValidator,
   loginValidator,
 };

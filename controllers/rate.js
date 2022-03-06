@@ -6,10 +6,10 @@ class RateController {
   getGameRate = async (req, res) => {
     try {
       const game = await Game.findById(req.body.gameId);
-      if (!game) return res.status(404).json({ error: 'No game found.' });
+      if (!game) return res.status(404).json({ error: 'Game not found.' });
 
       const user = await User.findById(req.body.userId);
-      if (!user) return res.status(404).json({ error: 'No user found.' });
+      if (!user) return res.status(404).json({ error: 'User not found.' });
 
       const rate = await Rate.findOne({ gameId: game._id, userId: user._id });
       if (!rate) return res.status(200).json({ rating: 0 });
@@ -22,16 +22,16 @@ class RateController {
   putGameRate = async (req, res) => {
     try {
       const game = await Game.findById(req.body.gameId);
-      if (!game) return res.status(404).json({ error: 'No game found.' });
+      if (!game) return res.status(404).json({ error: 'Game not found.' });
 
       const user = await User.findById(req.body.userId);
-      if (!user) return res.status(404).json({ error: 'No user found.' });
+      if (!user) return res.status(404).json({ error: 'User not found.' });
 
       let rate;
 
       // if rating === 0, remove it from the collection
       if (!req.body.rating) {
-        rate = await Rate.findOneAndRemove({
+        rate = await Rate.findOneAndDelete({
           gameId: req.body.gameId,
           userId: req.body.userId,
         });
