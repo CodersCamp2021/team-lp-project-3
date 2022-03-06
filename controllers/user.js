@@ -101,4 +101,35 @@ export default class UserController {
       return res.status(400).json({ error: 'User not found.' });
     }
   };
+  
+  static login = async (req, res) => {
+    // check validation results
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // check if email is already in database
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: 'User with this email does not exist.' });
+    }
+
+    //password is correct
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password,
+    );
+
+    if (!validPassword) {
+      return res.status(400).json({ message: 'Invalid password' });
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
+      expiresIn: '30m',
+    });
+    res.header('auth-token', token).json({message: "Logged in successfully"});
+  };
 }

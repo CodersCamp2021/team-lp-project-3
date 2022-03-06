@@ -3,7 +3,7 @@ import { body, param } from 'express-validator';
 import { platforms } from '../models/game.js';
 
 /**
- * middleware use to validate game request body
+ * Middleware use to validate game request body
  */
 const gameValidator = [
   body('title').exists().isString(),
@@ -15,7 +15,7 @@ const gameValidator = [
 ];
 
 /**
- * middleware use to validate register request body
+ * Middleware use to validate register request body
  */
 const registerValidator = [
   body('firstName').exists().isLength({ min: 3, max: 31 }),
@@ -56,7 +56,14 @@ const gameIdValdiator = [
       throw new Error(`Game with id: ${value} does not exist`);
     }
     return true;
-  }),
+  })
+];
+/**
+ * Middleware use to validate login request body
+ */
+const loginValidator = [
+  body('email').isEmail().isLength({ min: 6, max: 255 }),
+  body('password').isLength({ min: 6, max: 1024 }),
 ];
 
 export {
@@ -64,5 +71,10 @@ export {
   gameValidator,
   changeEmailValidator,
   changePassValidator,
+<<<<<<< HEAD
   gameIdValdiator,
+=======
+  loginValidator,
+>>>>>>> main
 };
+
