@@ -1,53 +1,17 @@
-import { validationResult } from 'express-validator';
 import { Game } from '../models/game.js';
 
 class GameController {
-  getAllGames = async (req, res) => {
-    try {
-      const allGames = await Game.find();
-      res.status(200).json(allGames);
-    } catch (error) {
-      res.status(400).json({ message: error });
-    }
-  };
-
-  getGameDetails = async (req, res) => {
-    try {
-      const game = await Game.findById(req.params.gameId);
-      res.status(200).json(game);
-    } catch (error) {
-      res.status(404).json({ message: error });
-    }
-  };
-
-  deleteGame = async (req, res) => {
-    try {
-      const game = await Game.findByIdAndDelete(req.params.gameId);
-      res.status(200).json({
-        _id: game._id,
-        message: `${game.title} has been successfully deleted from the DB.`,
-      });
-    } catch (error) {
-      res.status(404).json({ message: 'Game not found.' });
-    }
-  };
-
-  createGame = async (req, res) => {
+  createGame = async (body) => {
     const { title, category, description, platform, developer, releaseDate } =
-      req.body;
-
-    // check validation results
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+      body;
 
     // check if game title is unique
     const exisiting = await Game.findOne({ title: title });
     if (exisiting) {
-      return res.status(400).json({ message: 'Game title already exist' });
+      throw new Error(`Game called ${title} already exists`);
     }
 
+    // create game
     const game = new Game({
       title: title,
       category: category,
@@ -57,34 +21,41 @@ class GameController {
       releaseDate: releaseDate,
       ratedBy: [],
     });
-    try {
-      const savedGame = await game.save();
-      res.json(savedGame);
-    } catch (error) {
-      res.status(400).json({ message: error });
-    }
+
+    const savedGame = await game.save();
+    return savedGame;
   };
 
-  updateGameDetails = async (req, res) => {
-    try {
-      Game.findByIdAndUpdate(
-        req.params.gameId,
-        req.body,
-        { new: true },
-        (err, result) => {
-          if (err) {
-            return res.json({ message: err.message });
-          } else {
-            res.json({
-              _id: result._id,
-              message: `${result.title} has been successfully updated.`,
-            });
-          }
-        },
-      );
-    } catch (err) {
-      res.status(404).json({ message: 'Game not found.' });
+  getAllGames = async () => {
+    const allGames = await Game.find();
+    return allGames;
+  };
+
+  getGameDetails = async (gameId) => {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      throw new Error(`Game with id: ${gameId} does not exists`);
     }
+    return game;
+  };
+
+  updateGameDetails = async (gameId, body) => {
+    const game = await Game.findByIdAndUpdate(gameId, body, { new: true });
+
+    if (!game) {
+      throw new Error(`Game with id: ${gameId} does not exist`);
+    }
+
+    return game;
+  };
+
+  deleteGame = async (gameId) => {
+    const game = await Game.findByIdAndDelete(gameId);
+
+    if (!game) {
+      throw new Error(`Game with id: ${gameId} does not exist`);
+    }
+    return game;
   };
 }
 
