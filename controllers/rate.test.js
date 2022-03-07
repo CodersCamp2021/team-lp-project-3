@@ -164,4 +164,34 @@ describe('Updating a rating', () => {
     expect(mockGame.ratedBy).not.toContain(mockRate.userId);
     expect(mockUser.ratedGames).not.toContain(mockRate.gameId);
   });
+
+  it("should throw error if there's no matching gameId", async () => {
+    // mocks: rating in the DB
+
+    Game.findById = jest.fn().mockReturnValueOnce(null);
+    User.findById = jest.fn().mockReturnValueOnce(mockUser);
+    Rate.findOneAndDelete = jest.fn().mockReturnValueOnce({
+      gameId: mockRate.gameId,
+      userId: mockRate.userId,
+    });
+
+    await expect(RateController.putGameRate(mockRate)).rejects.toThrowError(
+      'Game not found.',
+    );
+  });
+
+  it("should throw error if there's no matching userId", async () => {
+    // mocks: rating in the DB
+
+    Game.findById = jest.fn().mockReturnValueOnce(mockGame);
+    User.findById = jest.fn().mockReturnValueOnce(null);
+    Rate.findOneAndDelete = jest.fn().mockReturnValueOnce({
+      gameId: mockRate.gameId,
+      userId: mockRate.userId,
+    });
+
+    await expect(RateController.putGameRate(mockRate)).rejects.toThrowError(
+      'User not found.',
+    );
+  });
 });
