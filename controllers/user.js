@@ -132,12 +132,4 @@ export default class UserController {
     });
     res.header('auth-token', token).json({message: "Logged in successfully"});
   };
-
-  static getUserInfo = async (userId) => {
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error(`User with id: ${userId} does not exists`);
-    }
-    return user;
-  };
 }
