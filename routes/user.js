@@ -17,5 +17,8 @@ router.put(
   changePassValidator,
   UserController.changeUserPassword,
 );
+router.post('/register', UserController.register);
+router.post('/login', UserController.login);
+router.post('/logout', UserController.logout);
 
 export { router as userRouter };

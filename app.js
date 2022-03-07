@@ -3,8 +3,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import expressSession from 'express-session';
 
-import register from './routes/register.js';
-import login from './routes/login.js';
 import { gameRouter } from './routes/game.js';
 import { userRouter } from './routes/user.js';
 import loginRequired from './utils/loginRequired.js';
@@ -33,8 +31,6 @@ app.use(
   }),
 );
 
-app.use('/register', register);
-app.use('/login', login);
 app.use('/games', loginRequired, gameRouter);
 app.use('/user', userRouter);
 

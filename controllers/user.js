@@ -135,4 +135,9 @@ export default class UserController {
 
     res.json({ message: 'Logged in successfully' });
   };
+
+  static logout = async (req, res) => {
+    delete req.session.userId;
+    res.json({ message: 'Logged out succesfully' });
+  };
 }
