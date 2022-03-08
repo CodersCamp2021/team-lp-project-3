@@ -1,5 +1,7 @@
 import express from 'express';
+import { validationResult } from 'express-validator';
 import RateController from '../controllers/rate.js';
+import { bodyGameIdValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
@@ -11,6 +13,19 @@ router.get('/', async (req, res) => {
     return res.status(404).json({
       error: error.message,
     });
+  }
+});
+router.get('/count', bodyGameIdValidator, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const count = await RateController.getRateCount(req.body);
+    return res.status(200).json(count);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 });
 router.put('/', async (req, res) => {
