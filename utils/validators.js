@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { body, param } from 'express-validator';
 import { platforms } from '../models/game.js';
+import { ratings } from '../models/rate.js';
 
 /**
  * Middleware use to validate game request body
@@ -66,6 +67,25 @@ const loginValidator = [
   body('password').isLength({ min: 6, max: 1024 }),
 ];
 
+/**
+ * Middleware - validating gameId, userId & rating
+ */
+const ratingValidator = [
+  body('gameId').custom((value) => {
+    if (!mongoose.isValidObjectId(value)) {
+      throw new Error(`Game with id: ${value} does not exist.`);
+    }
+    return true;
+  }),
+  body('userId').custom((value) => {
+    if (!mongoose.isValidObjectId(value)) {
+      throw new Error(`User with id: ${value} does not exist.`);
+    }
+    return true;
+  }),
+  body('rating').exists().isIn(ratings),
+];
+
 export {
   registerValidator,
   gameValidator,
@@ -73,4 +93,5 @@ export {
   changePassValidator,
   gameIdValidator,
   loginValidator,
+  ratingValidator,
 };
