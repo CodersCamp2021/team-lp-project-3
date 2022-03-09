@@ -30,6 +30,16 @@ const gameSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  ratedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
 });
 
 export const Game = mongoose.model('Game', gameSchema);

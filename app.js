@@ -5,6 +5,7 @@ import expressSession from 'express-session';
 import MongoStore from 'connect-mongo';
 
 import { gameRouter } from './routes/game.js';
+import { rateRouter } from './routes/rate.js';
 import { userRouter } from './routes/user.js';
 import loginRequired from './utils/loginRequired.js';
 
@@ -34,6 +35,7 @@ app.use(
 );
 
 app.use('/games', loginRequired, gameRouter);
+app.use('/rate', rateRouter);
 app.use('/user', userRouter);
 
 app.listen(3000, () =>

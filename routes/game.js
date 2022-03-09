@@ -1,7 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import GameController from '../controllers/game.js';
-import { gameIdValdiator, gameValidator } from '../utils/validators.js';
+import { gameIdValidator, gameValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
     });
   }
 });
-router.get('/:gameId', gameIdValdiator, async (req, res) => {
+router.get('/:gameId', gameIdValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -48,7 +48,7 @@ router.get('/:gameId', gameIdValdiator, async (req, res) => {
     });
   }
 });
-router.put('/:gameId', gameIdValdiator, async (req, res) => {
+router.put('/:gameId', gameIdValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -68,7 +68,7 @@ router.put('/:gameId', gameIdValdiator, async (req, res) => {
     });
   }
 });
-router.delete('/:gameId', gameIdValdiator, async (req, res) => {
+router.delete('/:gameId', gameIdValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

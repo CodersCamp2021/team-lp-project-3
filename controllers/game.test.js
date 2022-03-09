@@ -19,6 +19,7 @@ describe('Creating game', () => {
       platform: 'PC',
       developer: 'Valve',
       releaseDate: '2015-12-12',
+      ratedBy: [],
     };
 
     await expect(GameController.createGame(mockBody)).resolves.toBeDefined();
@@ -39,6 +40,7 @@ describe('Creating game', () => {
       platform: 'PC',
       developer: 'Valve',
       releaseDate: '2015-12-12',
+      ratedBy: [],
     };
 
     await expect(GameController.createGame(mockBody)).rejects.toThrowError();
@@ -57,6 +59,7 @@ describe('Getting all games', () => {
         platform: 'PC',
         developer: 'Valve',
         releaseDate: '2015-12-12T00:00:00.000Z',
+        ratedBy: [],
         __v: 0,
       },
       {
@@ -67,6 +70,7 @@ describe('Getting all games', () => {
         platform: 'PC',
         developer: 'Mojang',
         releaseDate: '2010-12-12T00:00:00.000Z',
+        ratedBy: [],
         __v: 0,
       },
     ]);
@@ -86,6 +90,7 @@ describe('Getting one game', () => {
       platform: 'PC',
       developer: 'Valve',
       releaseDate: '2015-12-12T00:00:00.000Z',
+      ratedBy: [],
       __v: 0,
     });
 
@@ -127,6 +132,7 @@ describe('Updating game details', () => {
       platform: 'PC',
       developer: 'Valve',
       releaseDate: '2015-12-12T00:00:00.000Z',
+      ratedBy: [],
       __v: 0,
     });
 
