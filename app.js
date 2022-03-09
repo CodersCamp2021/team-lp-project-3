@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import expressSession from 'express-session';
+import MongoStore from 'connect-mongo';
 
 import { gameRouter } from './routes/game.js';
 import { userRouter } from './routes/user.js';
@@ -24,6 +25,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24, // one day (in miliseconds)
