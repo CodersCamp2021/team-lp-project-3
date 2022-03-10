@@ -28,7 +28,7 @@ router.post('/register', registerValidator, async (req, res) => {
 
   try {
     const response = await UserController.register(req);
-    return res.status(201).json(response);
+    return res.status(201);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
