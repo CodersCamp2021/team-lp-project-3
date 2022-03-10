@@ -3,25 +3,25 @@ import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
 
 export default class UserController {
-  static register = async (req) => {
+  static register = async ({ body, session }) => {
     // check if username/email is already in database
-    const username = await User.findOne({ username: req.body.username });
+    const username = await User.findOne({ username: body.username });
     if (username) {
       throw new Error('This username has been taken.');
     }
-    const email = await User.findOne({ email: req.body.email });
+    const email = await User.findOne({ email: body.email });
     if (email) {
       throw new Error('This email has been taken.');
     }
 
     // hash password
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = await bcrypt.hash(body.password, salt);
     const user = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      username: req.body.username,
-      email: req.body.email,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      username: body.username,
+      email: body.email,
       password: hashedPassword,
       type: 'user',
       ratedGames: [],
@@ -30,7 +30,7 @@ export default class UserController {
     await user.save();
 
     // creates session with registered user
-    req.session.userId = user._id;
+    session.userId = user._id;
     return { message: 'User has been successfully registered.' };
   };
 
