@@ -153,7 +153,10 @@ export default class UserController {
           email: user.email,
         });
       } else {
-        res.json({ username: user.username });
+        res.json({
+          username: user.username,
+          ratedGames: user.ratedGames,
+        });
       }
     } catch (error) {
       return res.status(400).json({ error: 'User not found.' });
