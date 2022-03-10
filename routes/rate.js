@@ -1,7 +1,7 @@
 import express from 'express';
-import RateController from '../controllers/rate.js';
 import { validationResult } from 'express-validator';
-import { ratingValidator } from '../utils/validators.js';
+import RateController from '../controllers/rate.js';
+import { ratingValidator, bodyGameIdValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
@@ -15,6 +15,21 @@ router.get('/', async (req, res) => {
     });
   }
 });
+
+router.get('/count', bodyGameIdValidator, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const count = await RateController.getRateCount(req.body);
+    return res.status(200).json(count);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 router.put('/', ratingValidator, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

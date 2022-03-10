@@ -23,6 +23,12 @@ class RateController {
     return { rating: rate.rating };
   };
 
+  getRateCount = async ({ gameId }) => {
+    const likes = await Rate.countDocuments({ gameId, rating: 2 });
+    const dislikes = await Rate.countDocuments({ gameId, rating: 1 });
+    return { likes, dislikes };
+  };
+
   updateGameRate = async (body) => {
     const { gameId, userId, rating } = body;
     const game = await Game.findById(gameId);

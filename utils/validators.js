@@ -59,6 +59,19 @@ const gameIdValidator = [
     return true;
   }),
 ];
+
+/**
+ * Middleware - gameId from URL validation
+ */
+const bodyGameIdValidator = [
+  body('gameId').custom((value) => {
+    if (!mongoose.isValidObjectId(value)) {
+      throw new Error(`Game with id: ${value} does not exist`);
+    }
+    return true;
+  }),
+];
+
 /**
  * Middleware use to validate login request body
  */
@@ -93,5 +106,6 @@ export {
   changePassValidator,
   gameIdValidator,
   loginValidator,
+  bodyGameIdValidator,
   ratingValidator,
 };
