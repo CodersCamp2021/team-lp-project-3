@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+export const ratings = [0, 1, 2];
 
 const rateSchema = new mongoose.Schema({
   rating: {
     type: Number,
-    enum: [-1, 0, 1],
+    enum: ratings,
     default: 0,
   },
   userId: {

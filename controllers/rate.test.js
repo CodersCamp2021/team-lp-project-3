@@ -115,7 +115,7 @@ describe('Updating a rating', () => {
     User.findById = jest.fn().mockReturnValueOnce(mockUser);
     Rate.findOneAndUpdate = jest.fn().mockReturnValueOnce(mockRate);
 
-    await expect(RateController.putGameRate(mockRate)).resolves.toEqual({
+    await expect(RateController.updateGameRate(mockRate)).resolves.toEqual({
       message: 'Rating updated.',
     });
     expect(mockGame.ratedBy).toContain(mockRate.userId);
@@ -131,7 +131,7 @@ describe('Updating a rating', () => {
     User.findById = jest.fn().mockReturnValueOnce(mockUser);
     Rate.findOneAndUpdate = jest.fn().mockReturnValueOnce(mockRate);
 
-    await expect(RateController.putGameRate(mockRate)).resolves.toEqual({
+    await expect(RateController.updateGameRate(mockRate)).resolves.toEqual({
       message: 'Rating updated.',
     });
     // check if IDs are present
@@ -157,7 +157,7 @@ describe('Updating a rating', () => {
       userId: mockRate.userId,
     });
 
-    await expect(RateController.putGameRate(mockRate)).resolves.toEqual({
+    await expect(RateController.updateGameRate(mockRate)).resolves.toEqual({
       message: 'Rating updated.',
     });
     // check if IDs were deleted
@@ -175,7 +175,7 @@ describe('Updating a rating', () => {
       userId: mockRate.userId,
     });
 
-    await expect(RateController.putGameRate(mockRate)).rejects.toThrowError(
+    await expect(RateController.updateGameRate(mockRate)).rejects.toThrowError(
       'Game not found.',
     );
   });
@@ -190,7 +190,7 @@ describe('Updating a rating', () => {
       userId: mockRate.userId,
     });
 
-    await expect(RateController.putGameRate(mockRate)).rejects.toThrowError(
+    await expect(RateController.updateGameRate(mockRate)).rejects.toThrowError(
       'User not found.',
     );
   });

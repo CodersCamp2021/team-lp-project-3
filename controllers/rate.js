@@ -23,7 +23,7 @@ class RateController {
     return { rating: rate.rating };
   };
 
-  putGameRate = async (body) => {
+  updateGameRate = async (body) => {
     const { gameId, userId, rating } = body;
     const game = await Game.findById(gameId);
     if (!game) {
@@ -37,11 +37,6 @@ class RateController {
 
     // if rating === 0
     if (!rating) {
-      // remove it from the collection
-      await Rate.findOneAndDelete({
-        gameId: gameId,
-        userId: userId,
-      });
       // remove 'userId' from 'ratedBy'
       if (game.ratedBy.includes(userId)) {
         game.ratedBy.splice(game.ratedBy.indexOf(userId), 1);
