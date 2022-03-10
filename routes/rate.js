@@ -1,7 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import RateController from '../controllers/rate.js';
-import { bodyGameIdValidator } from '../utils/validators.js';
+import { ratingValidator, bodyGameIdValidator } from '../utils/validators.js';
 
 const router = express.Router();
 
@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
     });
   }
 });
+
 router.get('/count', bodyGameIdValidator, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -28,12 +29,18 @@ router.get('/count', bodyGameIdValidator, async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
-router.put('/', async (req, res) => {
+
+router.put('/', ratingValidator, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
-    const message = await RateController.putGameRate(req.body);
+    const message = await RateController.updateGameRate(req.body);
     return res.status(200).json(message);
   } catch (error) {
-    return res.status(404).json({ error: error.message });
+    return res.status(400).json({ error: error.message });
   }
 });
 
