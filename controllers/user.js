@@ -33,8 +33,12 @@ export default class UserController {
       ratedGames: [],
     });
     try {
-      const savedInDBExample = await UserSchema.save();
-      res.status(201).json(savedInDBExample);
+      const user = await UserSchema.save();
+
+      // creates session with registered user
+      req.session.userId = user._id;
+
+      res.status(201).json(user);
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
@@ -101,7 +105,7 @@ export default class UserController {
       return res.status(400).json({ error: 'User not found.' });
     }
   };
-  
+
   static login = async (req, res) => {
     // check validation results
     const errors = validationResult(req);
@@ -127,9 +131,13 @@ export default class UserController {
       return res.status(400).json({ message: 'Invalid password' });
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-      expiresIn: '30m',
-    });
-    res.header('auth-token', token).json({message: "Logged in successfully"});
+    req.session.userId = user._id;
+
+    res.json({ message: 'Logged in successfully' });
+  };
+
+  static logout = async (req, res) => {
+    delete req.session.userId;
+    res.json({ message: 'Logged out succesfully' });
   };
 }
