@@ -3,27 +3,21 @@ import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
 
 export default class UserController {
-  static register = async (req, res) => {
-    // check validation results
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
+  static register = async (req) => {
     // check if username/email is already in database
     const username = await User.findOne({ username: req.body.username });
     if (username) {
-      return res.status(400).json({ message: 'Username already exists' });
+      throw new Error('This username has been taken.');
     }
     const email = await User.findOne({ email: req.body.email });
     if (email) {
-      return res.status(400).json({ message: 'Email has been taken' });
+      throw new Error('This email has been taken.');
     }
 
     // hash password
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const UserSchema = new User({
+    const user = new User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       username: req.body.username,
@@ -32,16 +26,12 @@ export default class UserController {
       type: 'user',
       ratedGames: [],
     });
-    try {
-      const user = await UserSchema.save();
 
-      // creates session with registered user
-      req.session.userId = user._id;
+    await user.save();
 
-      res.status(201).json(user);
-    } catch (err) {
-      res.status(400).json({ message: err.message });
-    }
+    // creates session with registered user
+    req.session.userId = user._id;
+    return { message: 'User has been successfully registered.' };
   };
 
   static changeUserEmail = async (req, res) => {
