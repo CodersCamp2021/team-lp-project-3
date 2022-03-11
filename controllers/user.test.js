@@ -52,3 +52,50 @@ describe('Registering a user', () => {
     );
   });
 });
+
+
+describe('Login User', () => {
+  const mockUser = {
+    _id: '621f5d05fd6dfee087a3c3f1',
+    firstName: 'firstname',
+    lastName: 'secondname',
+    username: 'username',
+    email: 'username@test.com',
+    password: '$2b$10$/KDLVy8kSkB6WCHcTpnWcO8Z9kjuxIf.bgL4HrMRw8SbbGrH6EEQm',
+    type: 'user',
+    createdOn: '2022-03-10T21:10:24.191+00:00',
+    ratedGames: [],
+    __v: 0,
+    save: () => {},
+};
+
+const mockReq = {
+    body: {
+      email: 'username@test.com',
+      password: '$2b$10$/KDLVy8kSkB6WCHcTpnWcO8Z9kjuxIf.bgL4HrMRw8SbbGrH6EEQm',
+    },
+    session: {
+     cookie: {
+       path: '/',
+       _expires: '9999-03-11T23:01:13.317Z',
+       originalMaxAge: 86400000,
+       httpOnly: true,
+       secure: false,
+     },
+    },
+    userId: '621f5d05fd6dfee087a3c3f1',
+    
+  };
+
+  it('user login', async () => {
+    User.prototype.save = jest.fn().mockImplementation(() => {
+        return 'returnValue';
+    });
+    User.findOne = jest.fn().mockReturnValueOnce(mockUser);
+
+    await expect(UserController.login(mockReq)).resolves.toEqual({
+      message: 'Logged in successfully.',
+    });
+  });
+
+});
