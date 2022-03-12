@@ -77,16 +77,16 @@ export default class UserController {
   };
 
   static changeUserPassword = async (userId, body) => {
-    console.log(1)
     const user = await User.findById(userId);
     if (!user) {
       throw new Error(`User with id: ${userId} does not exist`);
     }
     const isValid = await bcrypt.compare(body.password, user.password);
+
     if (!isValid) {
       throw new Error(`Invalid password`);
     }
-    console.log(111111111111111111111111111111111111)
+
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(body.newPassword, salt);
     user.password = hashedPassword;
