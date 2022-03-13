@@ -24,7 +24,7 @@ router.put('/changePassword/:userId', changePassValidator, async (req, res) => {
       message: 'Password successfully updated.',
     });
   } catch (error) {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: error.message });
   }
 });
 router.post('/register', UserController.register);
