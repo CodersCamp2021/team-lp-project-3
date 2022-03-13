@@ -91,6 +91,10 @@ export default class UserController {
     const hashedPassword = await bcrypt.hash(body.newPassword, salt);
     user.password = hashedPassword;
     await user.save();
+
+    return {
+      message: 'Password successfully updated.',
+    };
   };
 
   static login = async (req, res) => {
