@@ -141,25 +141,8 @@ export default class UserController {
     res.json({ message: 'Logged out succesfully' });
   };
 
-  static getUserInfo = async (req, res) => {
-    try {
-      const user = await User.findById(req.params.userId);
-      if (req.params.userId == req.session.userId) {
-        res.json({
-          username: user.username,
-          ratedGames: user.ratedGames,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-        });
-      } else {
-        res.json({
-          username: user.username,
-          ratedGames: user.ratedGames,
-        });
-      }
-    } catch (error) {
-      return res.status(400).json({ error: 'User not found.' });
-    }
+  static getUserInfo = async (userId) => {
+    const user = await User.findById(userId);
+    return user
   };
 }
