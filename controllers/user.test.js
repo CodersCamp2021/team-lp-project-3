@@ -9,7 +9,7 @@ describe('Updating user password', () => {
     lastName: 'lname',
     username: 'user',
     email: 'test@example.com',
-    password: '$2b$10$avt5RfT6er4PBUkvvFPM6Oj.WhKLoiz/8w5J0IC208NbiZ0pyMezG',
+    password: '$2b$10$esfpdqit5A6oDyenef1nR.UWBroY2ci.427tbmk2i2vOXnfkz0bdO',
     type: 'user',
     createdOn: '2022-03-02T13:49:44.117Z',
     ratedGames: [],
@@ -19,19 +19,10 @@ describe('Updating user password', () => {
 
   const mockReq = {
     body: {
-      password: '$2b$10$avt5RfT6er4PBUkvvFPM6Oj.WhKLoiz/8w5J0IC208NbiZ0pyMezG',
+      password: 'passwordpassword',
       newPassword: 'dbaskdjasyfasddkashdkas',
       passwordConfirmation: 'dbaskdjasyfasddkashdkas',
     },
-    //session: {
-    //  cookie: {
-    //    path: '/',
-    //    _expires: '9999-03-11T15:01:13.317Z',
-    //    originalMaxAge: 86400000,
-    //    httpOnly: true,
-    //    secure: false,
-    //  },
-    //},
     params: {
       userId: '621f5d05fd6dfee087a3c3f1',
     },
@@ -61,10 +52,7 @@ describe('Updating user password', () => {
   });
 
   it('should change password when giving proper data', async () => {
-    //User.findById = jest.fn().mockReturnValueOnce(mockUser);
-    User.findById = jest.fn().mockImplementation(() => {
-      return mockUser;
-    });
+    User.findById = jest.fn().mockReturnValueOnce(mockUser);
 
     User.prototype.save = jest.fn().mockImplementation(() => {
       return 'returnValue';

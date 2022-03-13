@@ -13,23 +13,20 @@ router.put(
   UserController.changeUserEmail,
 );
 router.put('/changePassword/:userId', changePassValidator, async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try {
-      await UserController.changeUserPassword(
-        req.params.userId,
-        req.body,
-      );
-      return res.status(200).json({
-        message: 'Password successfully updated.',
-      });
-    } catch (error) {
-      return res.status(400).json({ error: err.message, });
-    }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-);
+  try {
+    await UserController.changeUserPassword(req.params.userId, req.body);
+
+    return res.status(200).json({
+      message: 'Password successfully updated.',
+    });
+  } catch (error) {
+    return res.status(400).json({ error: err.message });
+  }
+});
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
 router.post('/logout', UserController.logout);
