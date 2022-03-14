@@ -140,4 +140,9 @@ export default class UserController {
     delete req.session.userId;
     res.json({ message: 'Logged out succesfully' });
   };
+
+  static getUserInfo = async (userId) => {
+    const user = await User.findById(userId);
+    return user
+  };
 }
