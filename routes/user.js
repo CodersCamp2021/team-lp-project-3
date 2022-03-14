@@ -13,7 +13,11 @@ router.put('/changeEmail/:userId', changeEmailValidator, async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
+  if (req.session.userId !== req.params.userId) {
+    return res.status(403).json({
+      message: 'You cannot access this data',
+    });
+  }
   try {
     await UserController.changeUserEmail(req.params.userId, req.body);
 
@@ -29,6 +33,11 @@ router.put('/changePassword/:userId', changePassValidator, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
+  }
+  if (req.session.userId !== req.params.userId) {
+    return res.status(403).json({
+      message: 'You cannot access this data',
+    });
   }
   try {
     await UserController.changeUserPassword(req.params.userId, req.body);
