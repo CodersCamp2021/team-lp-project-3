@@ -131,7 +131,7 @@ export default class UserController {
   static getUserInfo = async (userId) => {
     const user = await User.findById(userId);
     if (!user) {
-      throw new Error(`User with id: ${userId} does not exists`);
+      throw new Error(`User with id: ${userId} does not exist.`);
     }
     return user
   };
