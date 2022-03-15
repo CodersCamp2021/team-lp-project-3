@@ -14,7 +14,7 @@ const getData = async () => {
       },
       body: `fields name, genres.name, summary, platforms.slug, involved_companies.developer, involved_companies.company, first_release_date, cover.url; 
       where hypes > 50; 
-      limit 20;`,
+      limit 30;`,
     });
     const data = await response.json();
     return data;
@@ -48,38 +48,36 @@ const getCompanyName = async (companyId) => {
     console.log(data[0].name);
     return data[0].name;
   } catch (error) {
-    console.error(error);
+    return '';
   }
 };
 
 const mapData = async () => {
   const gamesData = await getData();
-  const mappedGames = await gamesData.map(async (game) => {
-    // const developers = await Promise.all(
-    //   game.involved_companies
-    //     .filter((company) => company.developer)
-    //     .map(async ({ id }) => getCompanyName(id))
-    //     .join(', '),
-    // );
-    return {
-      title: game.name,
-      category: game.genres.map((game) => game.name).join(', '),
-      description: game.summary,
-      platform: game.platforms
-        .filter((platform) => platformDictionary[platform.slug])
-        .map((platform) => platformDictionary[platform.slug])
-        .join(', '),
-      developer: await Promise.all(
-        game.involved_companies
-          .filter((company) => company.developer)
-          .map(async ({ id }) => await getCompanyName(id)),
-      ),
-      releaseDate:
-        game.first_release_date && new Date(game.first_release_date * 1000),
-      rating: 0,
-      ratedBy: [],
-    };
-  });
+  const mappedGames = await Promise.all(
+    gamesData.map(async (game) => {
+      return {
+        title: game.name,
+        category: game.genres.map((game) => game.name).join(', '),
+        description: game.summary,
+        platform: game.platforms
+          .filter((platform) => platformDictionary[platform.slug])
+          .map((platform) => platformDictionary[platform.slug])
+          .join(', '),
+        developer: (
+          await Promise.all(
+            game.involved_companies
+              .filter((company) => company.developer)
+              .map(({ company }) => getCompanyName(company)),
+          )
+        ).join(', '),
+        releaseDate:
+          game.first_release_date && new Date(game.first_release_date * 1000),
+        rating: 0,
+        ratedBy: [],
+      };
+    }),
+  );
 
   console.log(mappedGames);
 };
