@@ -162,7 +162,7 @@ describe('Getting user info', () => {
     });
   
     it('should return info about user with specific userId', async () => {
-      User.findById = jest.fn().mockReturnValueOnce('621f5d05fd6dfee087a3c3f1');
+      User.findById = jest.fn().mockReturnValueOnce(mockUser);
   
       await expect(
         UserController.getUserInfo('621f5d05fd6dfee087a3c3f1'),
