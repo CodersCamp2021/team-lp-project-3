@@ -137,3 +137,35 @@ describe('Updating user email', () => {
     });
   });
 });
+
+describe('Getting user info', () => {
+    const mockUser = {
+      _id: '621f5d05fd6dfee087a3c3f1',
+      firstName: 'fname',
+      lastName: 'lname',
+      username: 'user',
+      email: 'test@example.com',
+      password: '$2b$10$esfpdqit5A6oDyenef1nR.UWBroY2ci.427tbmk2i2vOXnfkz0bdO',
+      type: 'user',
+      createdOn: '2022-03-02T13:49:44.117Z',
+      ratedGames: [],
+      __v: 0,
+      save: () => {},
+    };
+    
+    it('should throw error if no search userId in db', async () => {
+      User.findById = jest.fn().mockReturnValueOnce(null);
+  
+      await expect(
+        UserController.getUserInfo('621f5d05fd6dfee087a3c31'),
+      ).rejects.toThrowError();
+    });
+  
+    it('should return info about user with specific userId', async () => {
+      User.findById = jest.fn().mockReturnValueOnce(mockUser);
+  
+      await expect(
+        UserController.getUserInfo('621f5d05fd6dfee087a3c3f1'),
+      ).resolves.toBeDefined();
+    });
+  });
