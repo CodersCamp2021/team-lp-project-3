@@ -7,6 +7,8 @@ import { Game } from '../models/game.js';
 const app = express();
 dotenv.config();
 
+// Run `npm run insert` to start the server.
+// send an empty `POST` request to `/` path to insert game records into the DB.
 // DB setup
 mongoose.connect(process.env.DATABASE_PASSWORD, { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -17,7 +19,6 @@ db.once('open', () => console.log('Connected to database.'));
 app.use(express.json());
 
 const gamesURL = 'https://api.igdb.com/v4/games/';
-const companiesURL = 'https://api.igdb.com/v4/companies/';
 
 const getData = async () => {
   try {
@@ -28,9 +29,9 @@ const getData = async () => {
         'Client-ID': 'dik3ye3ha5u1ktuy09lfi3zx7o9get',
         Authorization: 'Bearer igeghv2icfol7htbx96k82c2w0rfh7',
       },
-      body: `fields name, genres.name, summary, platforms.slug, involved_companies.developer, involved_companies.company, first_release_date, cover.url; 
-      where hypes > 50 & platforms.slug = ("win","xboxone","series-x","series-s","ps4--1","ps5"); 
-      limit 40;`,
+      body: `fields name, genres.name, summary, platforms.slug, involved_companies.developer, involved_companies.company.name, first_release_date, cover.url; 
+      where hypes > 40 & themes != (42) & platforms.slug = ("win","xboxone","series-x","series-s","ps4--1","ps5") & involved_companies != null; 
+      limit 100;`,
     });
     const data = await response.json();
     return data;
@@ -47,65 +48,32 @@ const platformDictionary = {
   ps5: 'PS5',
 };
 
-const getCompanyName = async (companyId) => {
-  try {
-    const response = await fetch(companiesURL, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Client-ID': 'dik3ye3ha5u1ktuy09lfi3zx7o9get',
-        Authorization: 'Bearer igeghv2icfol7htbx96k82c2w0rfh7',
-      },
-      body: `fields *;
-      where id = ${companyId};`,
-    });
-    const data = await response.json();
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(data[0].name);
-        return resolve(data[0].name);
-      }, 250);
-    });
-    return data[0].name;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const mapData = async () => {
   const gamesData = await getData();
-  const mappedGames = await Promise.all(
-    gamesData.map(async (game) => {
-      return {
-        title: game.name,
-        category: game.genres.map((game) => game.name).join(', '),
-        description: game.summary,
-        platform: game.platforms
-          .filter((platform) => platformDictionary[platform.slug])
-          .map((platform) => platformDictionary[platform.slug]),
-        developer: (
-          await Promise.all(
-            game.involved_companies
-              .filter((company) => company.developer)
-              .map(async ({ company }) => await getCompanyName(company)),
-          )
-        ).join(', '),
-        releaseDate: game.first_release_date
-          ? new Date(game.first_release_date * 1000)
-          : new Date('9999'),
-        rating: 0,
-        ratedBy: [],
-      };
-    }),
-  );
-  return mappedGames;
+  return gamesData.map((game) => ({
+    title: game.name,
+    category: game.genres.map((game) => game.name).join(', '),
+    description: game.summary,
+    platform: game.platforms
+      .filter((platform) => platformDictionary[platform.slug])
+      .map((platform) => platformDictionary[platform.slug]),
+    developer: game.involved_companies
+      .filter((company) => company.developer)
+      .map((developer) => developer.company.name)
+      .join(', '),
+    releaseDate: game.first_release_date
+      ? new Date(game.first_release_date * 1000)
+      : new Date('9999'),
+    rating: 0,
+    ratedBy: [],
+  }));
 };
 
 app.post('/', async (req, res) => {
   try {
     const mappedGames = await mapData();
     await Game.create(mappedGames);
-    res.send('Ok');
+    res.send('Games successfully inserted into DB.');
   } catch (error) {
     console.log(error);
     res.status(400).json(error);
