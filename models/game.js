@@ -15,13 +15,15 @@ const gameSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-    maxLength: 1000,
+    maxLength: 5000,
   },
-  platform: {
-    type: String,
-    required: true,
-    enum: platforms,
-  },
+  platform: [
+    {
+      type: String,
+      required: true,
+      enum: platforms,
+    },
+  ],
   developer: {
     type: String,
     required: true,

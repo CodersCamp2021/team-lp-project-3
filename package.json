@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
+    "insert": "nodemon utils/getData.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
   },
   "repository": {
