@@ -33,7 +33,23 @@ router.post('/register', registerValidator, async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 });
-router.post('/login', UserController.login);
+router.post('/login', loginValidator, async (req, res) => {
+ // check validation results
+ const errors = validationResult(req);
+ if (!errors.isEmpty) {
+   return res.status(400).json({ error: errors.array()});
+ }
+
+ try {
+  await UserController.login(req, res);
+
+  return res.status(200).json({
+    message: 'Login successfully.',
+  });
+} catch (error) {
+  return res.status(400).json({ error: error.message });
+}
+});
 router.post('/logout', UserController.logout);
 
 export { router as userRouter };
