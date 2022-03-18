@@ -93,9 +93,32 @@ const mockReq = {
     });
     User.findOne = jest.fn().mockReturnValueOnce(mockUser);
 
-    await expect(UserController.login(mockReq)).resolves.toEqual({
+    await expect(UserController.login(mockReq.body, mockReq.session)).resolves.toEqual({
       message: 'Logged in successfully.',
     });
   });
 
+  
+  it('should throw an error when user passes invalid password', async () => {
+    User.findById = jest.fn().mockReturnValueOnce(mockUser);
+
+    await expect(
+      UserController.login(mockReq.userId, mockReq.body, {
+        password:
+          'invalid$2b$10$/KDLVy8kSkB6WCHcTpnWcO8Z9kjuxIf.bgL4HrMRw8SbbGrH6EEQm',
+      }),
+    ).rejects.toThrowError('Incorrect password');
+  });
+
+  
+
+  it('should throw an error when is no user with given id', async () => {
+    User.findById = jest.fn().mockReturnValueOnce(null);
+
+    await expect(
+      UserController.login(mockReq.userId, mockReq.body),
+    ).rejects.toThrowError(
+      `User with id: ${mockReq.userId} doesn't exist`,
+    );
+  });
 });

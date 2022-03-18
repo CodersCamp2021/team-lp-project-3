@@ -5,6 +5,7 @@ import {
   changeEmailValidator,
   changePassValidator,
   registerValidator,
+  loginValidator
 } from '../utils/validators.js';
 
 const router = express.Router();
@@ -41,7 +42,7 @@ router.post('/login', loginValidator, async (req, res) => {
  }
 
  try {
-  await UserController.login(req, res);
+  await UserController.login(req.body, req.session);
 
   return res.status(200).json({
     message: 'Login successfully.',
