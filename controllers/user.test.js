@@ -1,6 +1,7 @@
 import UserController from './user';
 import { jest } from '@jest/globals';
 import { User } from '../models/user';
+import bcrypt from 'bcrypt';
 
 describe('Registering a user', () => {
   const mockReq = {
@@ -53,8 +54,7 @@ describe('Registering a user', () => {
   });
 });
 
-
-describe('Login User', () => {
+describe('User login', () => {
   const mockUser = {
     _id: '621f5d05fd6dfee087a3c3f1',
     firstName: 'firstname',
@@ -67,58 +67,58 @@ describe('Login User', () => {
     ratedGames: [],
     __v: 0,
     save: () => {},
-};
+  };
 
-const mockReq = {
+  const mockReq = {
     body: {
       email: 'username@test.com',
       password: '$2b$10$/KDLVy8kSkB6WCHcTpnWcO8Z9kjuxIf.bgL4HrMRw8SbbGrH6EEQm',
     },
     session: {
-     cookie: {
-       path: '/',
-       _expires: '9999-03-11T23:01:13.317Z',
-       originalMaxAge: 86400000,
-       httpOnly: true,
-       secure: false,
-     },
+      cookie: {
+        path: '/',
+        _expires: '9999-03-11T23:01:13.317Z',
+        originalMaxAge: 86400000,
+        httpOnly: true,
+        secure: false,
+      },
     },
     userId: '621f5d05fd6dfee087a3c3f1',
-    
   };
 
-  it('user login', async () => {
+  it('should log user in', async () => {
     User.prototype.save = jest.fn().mockImplementation(() => {
-        return 'returnValue';
+      return 'returnValue';
     });
     User.findOne = jest.fn().mockReturnValueOnce(mockUser);
+    bcrypt.compare = jest.fn().mockReturnValueOnce('Valid password.');
 
-    await expect(UserController.login(mockReq.body, mockReq.session)).resolves.toEqual({
+    await expect(UserController.login(mockReq)).resolves.toEqual({
       message: 'Logged in successfully.',
     });
   });
 
-  
-  it('should throw an error when user passes invalid password', async () => {
-    User.findById = jest.fn().mockReturnValueOnce(mockUser);
+  it('should throw an error if user with given email was not found', async () => {
+    User.prototype.save = jest.fn().mockImplementation(() => {
+      return 'returnValue';
+    });
+    User.findOne = jest.fn().mockReturnValueOnce(null);
+    bcrypt.compare = jest.fn().mockReturnValueOnce('Valid password.');
 
-    await expect(
-      UserController.login(mockReq.userId, mockReq.body, {
-        password:
-          'invalid$2b$10$/KDLVy8kSkB6WCHcTpnWcO8Z9kjuxIf.bgL4HrMRw8SbbGrH6EEQm',
-      }),
-    ).rejects.toThrowError('Incorrect password');
+    await expect(UserController.login(mockReq)).rejects.toThrowError(
+      'User with this email does not exist.',
+    );
   });
 
-  
+  it('should throw an error if user with given email was not found', async () => {
+    User.prototype.save = jest.fn().mockImplementation(() => {
+      return 'returnValue';
+    });
+    User.findOne = jest.fn().mockReturnValueOnce(mockUser);
+    bcrypt.compare = jest.fn().mockReturnValueOnce(null);
 
-  it('should throw an error when is no user with given id', async () => {
-    User.findById = jest.fn().mockReturnValueOnce(null);
-
-    await expect(
-      UserController.login(mockReq.userId, mockReq.body),
-    ).rejects.toThrowError(
-      `User with id: ${mockReq.userId} doesn't exist`,
+    await expect(UserController.login(mockReq)).rejects.toThrowError(
+      'Invalid password.',
     );
   });
 });

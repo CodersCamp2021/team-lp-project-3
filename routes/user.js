@@ -5,7 +5,7 @@ import {
   changeEmailValidator,
   changePassValidator,
   registerValidator,
-  loginValidator
+  loginValidator,
 } from '../utils/validators.js';
 
 const router = express.Router();
@@ -29,27 +29,24 @@ router.post('/register', registerValidator, async (req, res) => {
 
   try {
     const response = await UserController.register(req);
-    return res.status(201);
+    return res.status(201).json(response);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
 });
 router.post('/login', loginValidator, async (req, res) => {
- // check validation results
- const errors = validationResult(req);
- if (!errors.isEmpty) {
-   return res.status(400).json({ error: errors.array()});
- }
+  // check validation results
+  const errors = validationResult(req);
+  if (!errors.isEmpty) {
+    return res.status(400).json({ error: errors.array() });
+  }
 
- try {
-  await UserController.login(req.body, req.session);
-
-  return res.status(200).json({
-    message: 'Login successfully.',
-  });
-} catch (error) {
-  return res.status(400).json({ error: error.message });
-}
+  try {
+    const response = await UserController.login(req);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
 });
 router.post('/logout', UserController.logout);
 
