@@ -1,7 +1,6 @@
 import UserController from './user';
 import { jest } from '@jest/globals';
 import { User } from '../models/user';
-import bcrypt from 'bcrypt';
 
 describe('Registering a user', () => {
   const mockReq = {
