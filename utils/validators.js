@@ -12,7 +12,8 @@ const gameValidator = [
   body('description').exists().isLength({ max: 1000 }),
   body('platform').exists().isIn(platforms),
   body('developer').exists().isString(),
-  body('releaseDate').exists().isDate(),
+  body('releaseDate').isDate(),
+  body('cover').isURL(),
 ];
 
 /**

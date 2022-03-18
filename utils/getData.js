@@ -29,7 +29,7 @@ const getData = async () => {
         'Client-ID': 'dik3ye3ha5u1ktuy09lfi3zx7o9get',
         Authorization: 'Bearer igeghv2icfol7htbx96k82c2w0rfh7',
       },
-      body: `fields name, genres.name, summary, platforms.slug, involved_companies.developer, involved_companies.company.name, first_release_date, cover.url; 
+      body: `fields name, genres.name, summary, platforms.slug, involved_companies.developer, involved_companies.company.name, first_release_date, cover.image_id; 
       where hypes > 40 & themes != (42) & platforms.slug = ("win","xboxone","series-x","series-s","ps4--1","ps5") & involved_companies != null; 
       limit 100;`,
     });
@@ -61,9 +61,9 @@ const mapData = async () => {
       .filter((company) => company.developer)
       .map((developer) => developer.company.name)
       .join(', '),
-    releaseDate: game.first_release_date
-      ? new Date(game.first_release_date * 1000)
-      : new Date('9999'),
+    releaseDate:
+      game.first_release_date && new Date(game.first_release_date * 1000),
+    cover: `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`,
     rating: 0,
     ratedBy: [],
   }));

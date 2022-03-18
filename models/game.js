@@ -30,7 +30,9 @@ const gameSchema = new mongoose.Schema({
   },
   releaseDate: {
     type: Date,
-    required: true,
+  },
+  cover: {
+    type: String,
   },
   rating: {
     type: Number,
