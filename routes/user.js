@@ -1,12 +1,42 @@
 import express from 'express';
+import { validationResult } from 'express-validator';
 import UserController from '../controllers/user.js';
 import {
   changeEmailValidator,
   changePassValidator,
+  registerValidator,
+  loginValidator,
 } from '../utils/validators.js';
-import { validationResult } from 'express-validator';
 const router = express.Router();
 
+router.post('/register', registerValidator, async (req, res) => {
+  // check validation results
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const response = await UserController.register(req);
+    return res.status(201).json(response);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+});
+router.post('/login', loginValidator, async (req, res) => {
+  // check validation results
+  const errors = validationResult(req);
+  if (!errors.isEmpty) {
+    return res.status(400).json({ error: errors.array() });
+  }
+
+  try {
+    const response = await UserController.login(req);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+});
 router.put('/changeEmail/:userId', changeEmailValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
@@ -49,8 +79,6 @@ router.put('/changePassword/:userId', changePassValidator, async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 });
-router.post('/register', UserController.register);
-router.post('/login', UserController.login);
 router.post('/logout', UserController.logout);
 router.get('/:userId', async (req, res) => {
   try {
