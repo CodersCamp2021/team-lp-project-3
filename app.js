@@ -38,8 +38,8 @@ app.use('/games', loginRequired, gameRouter);
 app.use('/rate', rateRouter);
 app.use('/user', userRouter);
 
-app.listen(3000, () =>
-  console.log('Server running on http://localhost:3000...'),
+app.listen(5000, () =>
+  console.log('Server running on http://localhost:5000...'),
 );
 
 export default app;
