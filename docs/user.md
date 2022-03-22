@@ -1,6 +1,6 @@
 # User
 
-> ## **POST** `/register`
+> ## **POST** `/user/register`
 
 Registers a new user in the DB.
 
@@ -68,9 +68,9 @@ Registers a new user in the DB.
 }
 ```
 
-> ## **POST** `/login`
+> ## **POST** `/user/login`
 
-Authenticates user and assigns a JWT Token.
+Creates a session with user for 24 hours.
 
 ### **Request parameters**
 
@@ -93,14 +93,30 @@ Authenticates user and assigns a JWT Token.
 - Success - `Code: 200`
 
 ```
-[JWT Token]
+{
+    "message": "Logged in successfully."
+}
 ```
 
 - Failure - `Code: 404`
 
 ```
 {
-    message: 'User with this email does not exist.'
+    "error": "User with this email does not exist."
+}
+```
+
+> ## **POST** `/user/logout`
+
+Removes a session created with user. To access some data you need to log in again.
+
+### Example response:
+
+- Success - `Code: 200`
+
+```
+{
+    "message": "Logged out successfully."
 }
 ```
 
