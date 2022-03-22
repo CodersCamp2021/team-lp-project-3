@@ -12,6 +12,12 @@ import loginRequired from './utils/loginRequired.js';
 export const app = express();
 dotenv.config();
 
+let appPort = 3000;
+if(process.env.PORT)
+{
+  appPort = process.env.PORT;
+}
+
 // DB setup
 mongoose.connect(process.env.DATABASE_PASSWORD, { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -34,12 +40,12 @@ app.use(
   }),
 );
 
-app.use('/games', loginRequired, gameRouter);
+app.use('/games', gameRouter);
 app.use('/rate', rateRouter);
 app.use('/user', userRouter);
 
-app.listen(3000, () =>
-  console.log('Server running on http://localhost:3000...'),
+app.listen(appPort, () =>
+  console.log(`Server running on http://localhost:${appPort}...`),
 );
 
 export default app;
