@@ -1,6 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 import RateController from '../controllers/rate.js';
+import loginRequired from '../utils/loginRequired.js';
 import { ratingValidator, bodyGameIdValidator } from '../utils/validators.js';
 
 const router = express.Router();
@@ -33,7 +34,7 @@ router.get('/count', bodyGameIdValidator, async (req, res) => {
   }
 });
 
-router.put('/', ratingValidator, async (req, res) => {
+router.put('/', loginRequired, ratingValidator, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
