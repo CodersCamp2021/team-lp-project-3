@@ -154,6 +154,7 @@ Updates information about game that matches `gameId` from URL params with data p
 | platform    | string[] |
 | developer   |  string  |
 | releaseDate |   date   |
+| cover       |  string  |
 
 ### Example request:
 
