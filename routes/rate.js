@@ -7,7 +7,10 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const rating = await RateController.getGameRate(req.body);
+    const rating = await RateController.getGameRate(
+      req.body.gameId,
+      req.body.userId,
+    );
     return res.status(200).json(rating);
   } catch (error) {
     return res.status(404).json({
@@ -23,7 +26,7 @@ router.get('/count', bodyGameIdValidator, async (req, res) => {
   }
 
   try {
-    const count = await RateController.getRateCount(req.body);
+    const count = await RateController.getRateCount(req.body.gameId);
     return res.status(200).json(count);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -37,7 +40,11 @@ router.put('/', ratingValidator, async (req, res) => {
   }
 
   try {
-    const message = await RateController.updateGameRate(req.body);
+    const message = await RateController.updateGameRate(
+      req.body.gameId,
+      req.body.userId,
+      req.body.rating,
+    );
     return res.status(200).json(message);
   } catch (error) {
     return res.status(400).json({ error: error.message });
