@@ -30,6 +30,12 @@ Creates new game.
 }
 ```
 
+Allowed values for **`Platform`** field:
+
+```
+['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X']
+```
+
 ### Example response:
 
 - Success - `Code: 200`
@@ -165,6 +171,12 @@ Updates information about game that matches `gameId` from URL params with data p
     "title": "CS:Global Offensive",
     "platform": ["PS5"]
 }
+```
+
+Allowed values for **`Platform`** field:
+
+```
+['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X']
 ```
 
 ### Example response:
