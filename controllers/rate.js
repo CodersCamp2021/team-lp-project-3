@@ -3,8 +3,7 @@ import { User } from '../models/user.js';
 import { Rate } from '../models/rate.js';
 
 class RateController {
-  getGameRate = async (body) => {
-    const { gameId, userId } = body;
+  getGameRate = async (gameId, userId) => {
     const game = await Game.findById(gameId);
     if (!game) {
       throw new Error('Game not found.');
@@ -23,14 +22,13 @@ class RateController {
     return { rating: rate.rating };
   };
 
-  getRateCount = async ({ gameId }) => {
+  getRateCount = async (gameId) => {
     const likes = await Rate.countDocuments({ gameId, rating: 2 });
     const dislikes = await Rate.countDocuments({ gameId, rating: 1 });
     return { likes, dislikes };
   };
 
-  updateGameRate = async (body) => {
-    const { gameId, userId, rating } = body;
+  updateGameRate = async (gameId, userId, rating) => {
     const game = await Game.findById(gameId);
     if (!game) {
       throw new Error('Game not found.');

@@ -6,26 +6,34 @@ Creates new game.
 
 ### **Request parameters**
 
-| Parameter   |  Type  |
-| ----------- | :----: |
-| title       | string |
-| category    | string |
-| description | string |
-| platform    | string |
-| developer   | string |
-| releaseDate |  date  |
+| Parameter              |   Type   |
+| ---------------------- | :------: |
+| title                  |  string  |
+| category               |  string  |
+| description            |  string  |
+| platform               | string[] |
+| developer              |  string  |
+| releaseDate (optional) |   date   |
+| cover (optional)       |  string  |
 
 ### Example request:
 
 ```
 {
-    "title": "CS:GO",
-    "category": "Shooter",
-    "description": "FPS game",
-    "platform": "PC",
-    "developer": "Valve",
-    "releaseDate": "2015-12-12"
+	"title": "CS:GO",
+	"category": "Shooter",
+	"description": "FPS game",
+	"platform": ["PC", "PS4", "XBOX ONE"],
+	"developer": "Valve",
+	"releaseDate": "2015-12-12",
+	"cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co271e.jpg"
 }
+```
+
+Allowed values for **`Platform`** field:
+
+```
+['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X']
 ```
 
 ### Example response:
@@ -61,9 +69,12 @@ Gets all games saved in database.
 		"title": "CS:GO",
 		"category": "Shooter",
 		"description": "FPS game",
-		"platform": "PC",
+		"platform": ["PC"],
 		"developer": "Valve",
 		"releaseDate": "2015-12-12T00:00:00.000Z",
+		"cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co271e.jpg",
+		"rating": 0,
+		"ratedBy": []
 		"__v": 0
 	},
 	{
@@ -71,9 +82,12 @@ Gets all games saved in database.
 		"title": "Minecraft",
 		"category": "Sandbox",
 		"description": "Family friendly game",
-		"platform": "PC",
+		"platform": ["PC", "XBOX ONE"],
 		"developer": "Mojang",
 		"releaseDate": "2011-12-12T00:00:00.000Z",
+		"cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co271e.jpg",
+		"rating": 2,
+		"ratedBy": [ObjectId("621eb71fac4e3d58a5c6c668")]
 		"__v": 0
 	}
 ]
@@ -111,9 +125,15 @@ Gets information about game that matches `gameId` from URL params.
 	"title": "CS:GO",
 	"category": "Shooter",
 	"description": "FPS game",
-	"platform": "PC",
+	"platform": ["PC"],
 	"developer": "Valve",
 	"releaseDate": "2015-12-12T00:00:00.000Z",
+	"cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3r51.jpg",
+	"rating": 1,
+	"ratedBy": [
+		ObjectId("621eb71fac4e3d58a5c6c668"),
+		ObjectId("62212cb188774cbc391a3950"),
+	]
 	"__v": 0
 }
 ```
@@ -132,14 +152,15 @@ Updates information about game that matches `gameId` from URL params with data p
 
 ### **Request parameters (optional)**
 
-| Parameter   |  Type  |
-| ----------- | :----: |
-| title       | string |
-| category    | string |
-| description | string |
-| platform    | string |
-| developer   | string |
-| releaseDate |  date  |
+| Parameter   |   Type   |
+| ----------- | :------: |
+| title       |  string  |
+| category    |  string  |
+| description |  string  |
+| platform    | string[] |
+| developer   |  string  |
+| releaseDate |   date   |
+| cover       |  string  |
 
 ### Example request:
 
@@ -148,8 +169,14 @@ Updates information about game that matches `gameId` from URL params with data p
 ```
 {
     "title": "CS:Global Offensive",
-    "platform": "PS5"
+    "platform": ["PS5"]
 }
+```
+
+Allowed values for **`Platform`** field:
+
+```
+['PS4', 'PS5', 'PC', 'XBOX ONE', 'XBOX SERIES S/X']
 ```
 
 ### Example response:
@@ -162,9 +189,10 @@ Updates information about game that matches `gameId` from URL params with data p
 	"title": "CS:Global Offensive",
 	"category": "Shooter",
 	"description": "FPS game",
-	"platform": "PS5",
+	"platform": ["PS5"],
 	"developer": "Valve",
 	"releaseDate": "2015-12-12T00:00:00.000Z",
+	"cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1yvf.jpg",
 	"__v": 0
 }
 ```

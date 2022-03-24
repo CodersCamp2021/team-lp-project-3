@@ -2,10 +2,11 @@ import express from 'express';
 import { validationResult } from 'express-validator';
 import GameController from '../controllers/game.js';
 import { gameIdValidator, gameValidator } from '../utils/validators.js';
+import loginRequired from '../utils/loginRequired.js';
 
 const router = express.Router();
 
-router.post('/', gameValidator, async (req, res) => {
+router.post('/', loginRequired, gameValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -48,7 +49,7 @@ router.get('/:gameId', gameIdValidator, async (req, res) => {
     });
   }
 });
-router.put('/:gameId', gameIdValidator, async (req, res) => {
+router.put('/:gameId', loginRequired, gameIdValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -68,7 +69,7 @@ router.put('/:gameId', gameIdValidator, async (req, res) => {
     });
   }
 });
-router.delete('/:gameId', gameIdValidator, async (req, res) => {
+router.delete('/:gameId', loginRequired, gameIdValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
