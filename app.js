@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import expressSession from 'express-session';
 import MongoStore from 'connect-mongo';
+import cors from 'cors';
 
 import { gameRouter } from './routes/game.js';
 import { rateRouter } from './routes/rate.js';
@@ -12,9 +13,8 @@ import loginRequired from './utils/loginRequired.js';
 export const app = express();
 dotenv.config();
 
-let appPort = 3000;
-if(process.env.PORT)
-{
+let appPort = 3005;
+if (process.env.PORT) {
   appPort = process.env.PORT;
 }
 
@@ -26,6 +26,7 @@ db.once('open', () => console.log('Connected to database.'));
 
 // allow express get json in request body
 app.use(express.json());
+app.use(cors({ origin: '*' }));
 app.use(
   expressSession({
     name: 'team-lp-project-3',
