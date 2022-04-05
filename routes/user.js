@@ -105,6 +105,8 @@ router.get('/:userId', async (req, res) => {
     } else {
       res.json({
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         ratedGames: user.ratedGames,
       });
     }
