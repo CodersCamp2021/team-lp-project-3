@@ -13,7 +13,7 @@ import loginRequired from './utils/loginRequired.js';
 export const app = express();
 dotenv.config();
 
-let appPort = 3011;
+let appPort = 3000;
 if (process.env.PORT) {
   appPort = process.env.PORT;
 }
