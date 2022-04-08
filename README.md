@@ -27,7 +27,7 @@ Welcome to our API documentation. Here you can find all endpoints we provide, de
 
 ## Deploy
 
-We have deployed our API using Heroku platform and it is available at http://54.90.71.105:3000/. _Make sure you are using correct endpoints._
+We have deployed our API using Heroku platform and it is available at https://team-lp-project-3.herokuapp.com/games. _Make sure you are using correct endpoints._
 
 ## Data
 
