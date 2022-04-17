@@ -28,7 +28,11 @@ db.once('open', () => console.log('Connected to database.'));
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://coderscamp2021.github.io'],
+    origin: [
+      'http://localhost',
+      'http://localhost:3000',
+      'https://coderscamp2021.github.io',
+    ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }),
