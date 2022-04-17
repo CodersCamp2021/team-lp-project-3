@@ -41,8 +41,8 @@ app.use(
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24, // one day (in miliseconds)
+      secure: false,
+      maxAge: 1000 * 30, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
     },
     proxy: true,
   }),
