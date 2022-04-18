@@ -27,8 +27,62 @@ class GameController {
   };
 
   getAllGames = async () => {
-    const allGames = await Game.find();
-    return allGames;
+    const gamesWithRatings = await Game.aggregate([
+      {
+        $lookup: {
+          from: 'rates',
+          localField: '_id',
+          foreignField: 'gameId',
+          pipeline: [
+            {
+              $group: {
+                _id: '$gameId',
+                likes: {
+                  $sum: {
+                    $cond: [
+                      {
+                        $eq: ['$rating', 2],
+                      },
+                      1,
+                      0,
+                    ],
+                  },
+                },
+                dislikes: {
+                  $sum: {
+                    $cond: [
+                      {
+                        $eq: ['$rating', 1],
+                      },
+                      1,
+                      0,
+                    ],
+                  },
+                },
+              },
+            },
+            {
+              $project: {
+                likes: '$likes',
+                dislikes: '$dislikes',
+                stars: {
+                  $divide: [
+                    {
+                      $multiply: ['$likes', 5],
+                    },
+                    {
+                      $add: ['$likes', '$dislikes'],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'ratings',
+        },
+      },
+    ]);
+    return gamesWithRatings;
   };
 
   getGameDetails = async (gameId) => {
