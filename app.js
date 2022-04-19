@@ -28,7 +28,11 @@ db.once('open', () => console.log('Connected to database.'));
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://coderscamp2021.github.io'],
+    origin: [
+      'http://localhost',
+      'http://localhost:3000',
+      'https://coderscamp2021.github.io',
+    ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }),
@@ -41,8 +45,8 @@ app.use(
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24, // one day (in miliseconds)
+      secure: false,
+      maxAge: 1000 * 30, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
     },
     proxy: true,
   }),
