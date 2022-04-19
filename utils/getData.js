@@ -26,8 +26,8 @@ const getData = async () => {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Client-ID': 'YOUR-CLIENTID',
-        Authorization: 'Bearer ABC',
+        'Client-ID': 'CLIENT-ID',
+        Authorization: 'Bearer TOKEN',
       },
       body: `fields name, genres.name, summary, platforms.slug, involved_companies.developer, involved_companies.company.name, first_release_date, cover.image_id; 
       where hypes > 40 & themes != (42) & platforms.slug = ("win","xboxone","series-x","series-s","ps4--1","ps5") & involved_companies != null; 
@@ -48,8 +48,22 @@ const platformDictionary = {
   ps5: 'PS5',
 };
 
+const imageSizes = [
+  'cover_small',
+  'cover_big',
+  'screenshot_med',
+  'screenshot_big',
+  'screenshot_huge',
+  'logo_med',
+  'thumb',
+  'micro',
+  '720p',
+  '1080p',
+];
+
 const mapData = async () => {
   const gamesData = await getData();
+  console.log(gamesData);
   return gamesData.map((game) => ({
     title: game.name,
     category: game.genres.map((game) => game.name).join(', '),
@@ -63,7 +77,12 @@ const mapData = async () => {
       .join(', '),
     releaseDate:
       game.first_release_date && new Date(game.first_release_date * 1000),
-    cover: `https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`,
+    cover: Object.fromEntries(
+      imageSizes.map((key) => [
+        key,
+        `https://images.igdb.com/igdb/image/upload/t_${key}/${game.cover.image_id}.jpg`,
+      ]),
+    ),
     rating: 0,
     ratedBy: [],
   }));
