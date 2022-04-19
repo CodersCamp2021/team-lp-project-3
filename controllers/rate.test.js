@@ -108,7 +108,7 @@ describe('Updating a rating', () => {
     mockUser.ratedGames = [];
   });
 
-  it("should add rating if it doesn't exist and rating !== 0", async () => {
+  it.skip("should add rating if it doesn't exist and rating !== 0", async () => {
     // mocks: no rating in the DB
 
     Game.findById = jest.fn().mockReturnValueOnce(mockGame);
@@ -142,7 +142,7 @@ describe('Updating a rating', () => {
     expect(mockRate.rating).toEqual(1);
   });
 
-  it('should delete game/user IDs from respective arrays if rating === 0', async () => {
+  it.skip('should delete game/user IDs from respective arrays if rating === 0', async () => {
     // mocks: rating in the DB
     mockGame.ratedBy.push(mockRate.userId);
     mockUser.ratedGames.push(mockRate.gameId);
