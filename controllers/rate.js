@@ -22,6 +22,20 @@ class RateController {
     return { rating: rate.rating };
   };
 
+  getGameRates = async (gameId) => {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      throw new Error('Game not found.');
+    }
+
+    const rates = await Rate.find({ gameId: game._id });
+    if (!rates) {
+      return { rating: 0 };
+    }
+
+    return { rating: rates };
+  };
+
   getRateCount = async (gameId) => {
     const likes = await Rate.countDocuments({ gameId, rating: 2 });
     const dislikes = await Rate.countDocuments({ gameId, rating: 1 });
