@@ -28,7 +28,7 @@ router.post('/login', loginValidator, async (req, res) => {
   // check validation results
   const errors = validationResult(req);
   if (!errors.isEmpty) {
-    return res.status(400).json({ error: errors.array() });
+    return res.status(203).json({ error: errors.array() });
   }
 
   try {
