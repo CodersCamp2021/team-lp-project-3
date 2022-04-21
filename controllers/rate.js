@@ -32,7 +32,7 @@ class RateController {
     const rates = await Rate.aggregate([
       {
         $match: {
-          _id: new mongoose.Types.ObjectId(gameId),
+          gameId: new mongoose.Types.ObjectId(gameId),
         },
       },
       {
@@ -41,6 +41,8 @@ class RateController {
           localField: 'userId',
           foreignField: '_id',
           as: 'userInfo',
+          pipeline: [
+            { $project: { "username": 1, "firstName": 1, "lastName": 1, "_id": 0}}]
         },
       },
     ]);
