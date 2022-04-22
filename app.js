@@ -37,6 +37,7 @@ app.use(
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }),
 );
+app.enable('trust proxy');
 app.use(
   expressSession({
     name: 'team-lp-project-3',
@@ -44,6 +45,7 @@ app.use(
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
+    proxy: true,
     cookie: {
       secure: true,
       sameSite: "none",
