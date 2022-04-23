@@ -13,7 +13,7 @@ import loginRequired from './utils/loginRequired.js';
 export const app = express();
 dotenv.config();
 
-let appPort = 3001;
+let appPort = 3000;
 if (process.env.PORT) {
   appPort = process.env.PORT;
 }
@@ -46,11 +46,11 @@ app.use(
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
-    proxy: true,
     cookie: {
       secure: true,
       sameSite: 'none',
       maxAge: 1000 * 60, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
+      httpOnly: false,
     },
     proxy: true,
   }),
