@@ -48,15 +48,9 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
     proxy: true,
     cookie: {
-<<<<<<< HEAD
-      sameSite: 'none',
-      secure: false,
-      maxAge: 1000 * 30, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
-=======
       secure: true,
-      sameSite: "none",
+      sameSite: 'none',
       maxAge: 1000 * 60, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
->>>>>>> aab2855f5859a4b083d7f75eacffbb875ee3b222
     },
     proxy: true,
   }),
