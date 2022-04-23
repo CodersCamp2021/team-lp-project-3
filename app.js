@@ -38,6 +38,7 @@ app.use(
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }),
 );
+app.enable('trust proxy');
 app.use(
   expressSession({
     name: 'team-lp-project-3',
@@ -45,10 +46,17 @@ app.use(
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_PASSWORD }),
+    proxy: true,
     cookie: {
+<<<<<<< HEAD
       sameSite: 'none',
       secure: false,
       maxAge: 1000 * 30, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
+=======
+      secure: true,
+      sameSite: "none",
+      maxAge: 1000 * 60, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
+>>>>>>> aab2855f5859a4b083d7f75eacffbb875ee3b222
     },
     proxy: true,
   }),
