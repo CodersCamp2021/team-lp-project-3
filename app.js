@@ -13,7 +13,7 @@ import loginRequired from './utils/loginRequired.js';
 export const app = express();
 dotenv.config();
 
-let appPort = 3000;
+let appPort = 3001;
 if (process.env.PORT) {
   appPort = process.env.PORT;
 }
@@ -32,6 +32,7 @@ app.use(
       'http://localhost',
       'http://localhost:3000',
       'https://coderscamp2021.github.io',
+      'https://team-lp-project-4.herokuapp.com',
     ],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
