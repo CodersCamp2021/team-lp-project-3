@@ -1,6 +1,7 @@
 import { Game } from '../models/game.js';
 import { User } from '../models/user.js';
 import { Rate } from '../models/rate.js';
+import mongoose from 'mongoose';
 
 class RateController {
   getGameRate = async (gameId, userId) => {
@@ -20,6 +21,33 @@ class RateController {
     }
 
     return { rating: rate.rating };
+  };
+
+  getGameRates = async (gameId) => {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      throw new Error('Game not found.');
+    }
+
+    const rates = await Rate.aggregate([
+      {
+        $match: {
+          gameId: new mongoose.Types.ObjectId(gameId),
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'userInfo',
+          pipeline: [
+            { $project: { "username": 1, "firstName": 1, "lastName": 1, "_id": 0}}]
+        },
+      },
+    ]);
+
+    return { rating: rates };
   };
 
   getRateCount = async (gameId) => {
