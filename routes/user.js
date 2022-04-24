@@ -91,6 +91,26 @@ router.put(
   },
 );
 router.post('/logout', loginRequired, UserController.logout);
+
+router.get('/userInfo', async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(400).json({ error: 'You must be logged in!' });
+  }
+  try {
+    const user = await UserController.getUserInfo(req.session.userId);
+    res.json({
+      id: user._id,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      ratedGames: user.ratedGames,
+    });
+  } catch (error) {
+    return res.status(400).json({ error: 'User not found.' });
+  }
+});
+
 router.get('/:userId', async (req, res) => {
   try {
     const user = await UserController.getUserInfo(req.params.userId);
