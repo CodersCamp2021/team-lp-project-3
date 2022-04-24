@@ -30,7 +30,10 @@ export default class UserController {
 
     // creates session with registered user
     session.userId = user._id;
-    return { message: 'User has been successfully registered.' };
+    return {
+      message: 'User has been successfully registered.',
+      userId: user._id,
+    };
   };
 
   static login = async ({ body, session }) => {
@@ -48,7 +51,10 @@ export default class UserController {
     }
 
     session.userId = user._id;
-    return { message: 'Logged in successfully.' };
+    return {
+      message: 'Logged in successfully.',
+      userId: user._id,
+    };
   };
 
   static changeUserEmail = async (userId, body) => {
