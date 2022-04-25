@@ -42,7 +42,8 @@ class RateController {
           foreignField: '_id',
           as: 'userInfo',
           pipeline: [
-            { $project: { "username": 1, "firstName": 1, "lastName": 1, "_id": 0}}]
+            { $project: { username: 1, firstName: 1, lastName: 1, _id: 0 } },
+          ],
         },
       },
     ]);
@@ -77,6 +78,11 @@ class RateController {
       if (user.ratedGames.includes(gameId)) {
         user.ratedGames.splice(user.ratedGames.indexOf(gameId), 1);
       }
+      // remove rating document
+      await Rate.findOneAndDelete({
+        gameId: gameId,
+        userId: userId,
+      });
     } else {
       // if rating !== 0
       // add/update it in the collection
