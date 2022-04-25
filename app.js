@@ -49,7 +49,8 @@ app.use(
     cookie: {
       secure: true,
       maxAge: 1000 * 60 * 60 * 8, // 1000 * 60 * 60 * 24,  one day (in miliseconds)
-      httpOnly: false,
+      httpOnly: true,
+      sameSite: 'none',
     },
     proxy: true,
   }),
