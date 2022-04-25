@@ -17,7 +17,7 @@ router.get('/:gameId', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const rating = await RateController.getGameRate(
       req.body.gameId,
